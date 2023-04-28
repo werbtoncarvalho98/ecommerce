@@ -19,9 +19,7 @@ public class Endereco {
     private String complemento;
     private String bairro;
     private String cep;
-    @ManyToOne
-    @JoinColumn(name = "estado_id")
-    private Estado estado;
+
     @ManyToOne
     @JoinColumn(name = "municipio_id")
     private Municipio municipio;
@@ -80,14 +78,6 @@ public class Endereco {
 
     public void setCep(String cep) {
         this.cep = cep;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 
     public Municipio getMunicipio() {

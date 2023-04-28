@@ -48,6 +48,8 @@ public class EstadoResource {
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Status.NOT_FOUND).build();
         }
     }
 
@@ -56,7 +58,7 @@ public class EstadoResource {
     public Response update(@PathParam("id") Long id, EstadoDTO dto) {
         try {
             EstadoResponseDTO estado = estadoService.update(id, dto);
-            return Response.ok(estado).build();
+            return Response.status(Status.NO_CONTENT).entity(estado).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();

@@ -55,7 +55,7 @@ public class HardwareResource {
     public Response update(@PathParam("id") Long id, HardwareDTO dto) {
         try {
             HardwareResponseDTO hardware = hardwareService.update(id, dto);
-            return Response.ok(hardware).build();
+            return Response.status(Status.NO_CONTENT).entity(hardware).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();

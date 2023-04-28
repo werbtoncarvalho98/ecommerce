@@ -8,6 +8,6 @@ public record EstadoResponseDTO(
         String sigla) {
 
     public EstadoResponseDTO(Estado estado) {
-        this(estado.getId(), estado.getSigla(), estado.getNome());
+        this(estado.getId(), estado.getNome(), estado.getSigla());
     }
 }
