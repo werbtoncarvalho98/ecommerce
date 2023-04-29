@@ -34,7 +34,7 @@ public class EstadoServiceImpl implements EstadoService {
     public EstadoResponseDTO findById(Long id) {
         Estado estado = estadoRepository.findById(id);
         if (estado == null)
-            throw new NotFoundException("Estado não encontrado.");
+            return null;
         return new EstadoResponseDTO(estado);
     }
 

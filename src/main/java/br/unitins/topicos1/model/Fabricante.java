@@ -30,11 +30,11 @@ public class Fabricante {
         this.nome = nome;
     }
 
-    public String getSite() {
+    public String getWebsite() {
         return website;
     }
 
-    public void setSite(String website) {
+    public void setWebsite(String website) {
         this.website = website;
     }
 }

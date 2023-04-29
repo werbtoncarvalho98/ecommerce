@@ -12,6 +12,7 @@ import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
+import br.unitins.topicos1.model.Fabricante;
 import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.model.Integridade;
 import br.unitins.topicos1.model.Nivel;
@@ -36,7 +37,7 @@ public class HardwareServiceImpl implements HardwareService {
     public HardwareResponseDTO findById(Long id) {
         Hardware hardware = hardwareRepository.findById(id);
         if (hardware == null)
-            throw new NotFoundException("Equipamento não encontrado.");
+            return null;
         return new HardwareResponseDTO(hardware);
     }
 
@@ -50,7 +51,8 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setLancamento(hardwareDTO.lancamento());
         entity.setNivel(Nivel.valueOf(hardwareDTO.nivel()));
         entity.setIntegridade(Integridade.valueOf(hardwareDTO.integridade()));
-        entity.setFabricante(hardwareDTO.fabricante());
+        entity.setFabricante(new Fabricante());
+        entity.getFabricante().setId(hardwareDTO.idFabricante());
 
         hardwareRepository.persist(entity);
         
@@ -68,7 +70,8 @@ public class HardwareServiceImpl implements HardwareService {
         hardwareUpdate.setLancamento(hardwareDTO.lancamento());
         hardwareUpdate.setNivel(Nivel.valueOf(hardwareDTO.nivel()));
         hardwareUpdate.setIntegridade(Integridade.valueOf(hardwareDTO.integridade()));
-        hardwareUpdate.setFabricante(hardwareDTO.fabricante());
+        hardwareUpdate.setFabricante(new Fabricante());
+        hardwareUpdate.getFabricante().setId(hardwareDTO.idFabricante());
         hardwareRepository.persist(hardwareUpdate);
         
         return new HardwareResponseDTO(hardwareUpdate);

@@ -41,7 +41,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     public MunicipioResponseDTO findById(Long id) {
         Municipio municipio = municipioRepository.findById(id);
         if (municipio == null)
-            throw new NotFoundException("Município não encontrado.");
+            return null;
         return new MunicipioResponseDTO(municipio);
     }
 

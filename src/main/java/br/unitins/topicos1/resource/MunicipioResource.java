@@ -55,11 +55,11 @@ public class MunicipioResource {
     public Response update(@PathParam("id") Long id, MunicipioDTO dto) {
         try {
             MunicipioResponseDTO municipio = municipioService.update(id, dto);
-            return Response.ok(municipio).build();
+            return Response.status(Status.NO_CONTENT).entity(municipio).build();
         } catch(ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
-        }      
+        }
     }
 
     @DELETE

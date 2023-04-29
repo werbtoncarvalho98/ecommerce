@@ -34,7 +34,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ProdutoResponseDTO findById(Long id) {
         Produto produto = produtoRepository.findById(id);
         if (produto == null)
-            throw new NotFoundException("Equipamento não encontrado.");
+            return null;
         return new ProdutoResponseDTO(produto);
     }
 
