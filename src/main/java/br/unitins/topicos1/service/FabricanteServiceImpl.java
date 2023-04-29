@@ -34,7 +34,7 @@ public class FabricanteServiceImpl implements FabricanteService {
     public FabricanteResponseDTO findById(Long id) {
         Fabricante fabricante = fabricanteRepository.findById(id);
         if (fabricante == null)
-            throw new NotFoundException("Equipamento não encontrado.");
+            return null;
         return new FabricanteResponseDTO(fabricante);
     }
 

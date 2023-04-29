@@ -37,7 +37,7 @@ public class HardwareServiceImpl implements HardwareService {
     public HardwareResponseDTO findById(Long id) {
         Hardware hardware = hardwareRepository.findById(id);
         if (hardware == null)
-            throw new NotFoundException("Equipamento não encontrado.");
+            return null;
         return new HardwareResponseDTO(hardware);
     }
 

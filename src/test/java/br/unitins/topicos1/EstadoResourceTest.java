@@ -66,7 +66,6 @@ public class EstadoResourceTest {
 
     @Test
     public void testDelete() {
-
         EstadoDTO estados = new EstadoDTO("Tocantins", "TO");
         Long id = estadoService.create(estados).id();
 

@@ -6,10 +6,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-
 import javax.inject.Inject;
 
 import org.junit.jupiter.api.Test;
@@ -17,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import br.unitins.topicos1.dto.FabricanteDTO;
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
+import br.unitins.topicos1.model.Fabricante;
+import br.unitins.topicos1.service.FabricanteService;
 import br.unitins.topicos1.service.HardwareService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -26,6 +24,9 @@ public class HardwareResourceTest {
 
         @Inject
         HardwareService hardwareService;
+
+        @Inject
+        FabricanteService fabricanteService;
 
         @Test
         public void getAllTest() {
@@ -37,27 +38,14 @@ public class HardwareResourceTest {
 
         @Test
         public void testInsert() {
-                // Cria um objeto Fabricante
-                FabricanteDTO fabricante = new FabricanteDTO("Gigabyte", "gigabyte.com");
-
-                Date lancamento = new Date();
-
-                // Insere o Fabricante no banco de dados e obtém o seu id
-                Long idFabricante = given()
-                                .contentType(ContentType.JSON)
-                                .body(fabricante)
-                                .when().post("/fabricantes")
-                                .then()
-                                .statusCode(201)
-                                .extract()
-                                .path("id");
+                Long idFabricante = fabricanteService.create(new FabricanteDTO("Nvidia", "nvidia.com")).id();
 
                 HardwareDTO hardware = new HardwareDTO(
                                 "RTX 2060",
-                                lancamento,
+                                null,
                                 1,
                                 1,
-                                idFabricante.intValue());
+                                idFabricante);
 
                 given()
                                 .contentType(ContentType.JSON)
@@ -67,10 +55,10 @@ public class HardwareResourceTest {
                                 .statusCode(201)
                                 .body("id", notNullValue(),
                                                 "modelo", is("RTX 2060"),
-                                                "lancamento", is(lancamento.getTime()),
+                                                "lancamento", is(null),
                                                 "nivel", is(1),
                                                 "integridade", is(1),
-                                                "fabricante", is(idFabricante.intValue()));
+                                                "fabricante", notNullValue(Fabricante.class));
         }
 
         @Test

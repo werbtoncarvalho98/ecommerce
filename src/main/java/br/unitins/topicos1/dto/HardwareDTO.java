@@ -8,5 +8,5 @@ public record HardwareDTO(
         Date lancamento,
         Integer nivel,
         Integer integridade,
-        Integer idFabricante) {
+        Long idFabricante) {
 }

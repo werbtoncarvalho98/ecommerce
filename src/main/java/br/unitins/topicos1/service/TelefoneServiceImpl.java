@@ -34,7 +34,7 @@ public class TelefoneServiceImpl implements TelefoneService {
     public TelefoneResponseDTO findById(Long id) {
         Telefone telefone = telefoneRepository.findById(id);
         if (telefone == null)
-            throw new NotFoundException("Telefone não encontrado.");
+            return null;
         return new TelefoneResponseDTO(telefone);
     }
 

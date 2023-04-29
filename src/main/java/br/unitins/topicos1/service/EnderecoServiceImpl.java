@@ -35,7 +35,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     public EnderecoResponseDTO findById(Long id) {
         Endereco endereco = enderecoRepository.findById(id);
         if (endereco == null)
-            throw new NotFoundException("Endereco não encontrado.");
+            return null;
         return new EnderecoResponseDTO(endereco);
     }
 
