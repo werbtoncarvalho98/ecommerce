@@ -2,13 +2,16 @@ package br.unitins.topicos1.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+
+import com.fasterxml.jackson.core.sym.Name;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
@@ -23,7 +26,7 @@ public class Hardware extends Produto {
     private Integridade integridade;
     
     @ManyToOne
-    @JoinColumn(name = "id_fabricante")
+    @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
 
     public Long getId() {
