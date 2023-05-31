@@ -3,6 +3,12 @@ package br.unitins.topicos1.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import br.unitins.topicos1.dto.EnderecoDTO;
+import br.unitins.topicos1.dto.EnderecoResponseDTO;
+import br.unitins.topicos1.model.Endereco;
+import br.unitins.topicos1.model.Municipio;
+import br.unitins.topicos1.repository.EnderecoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -10,11 +16,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-import br.unitins.topicos1.dto.EnderecoDTO;
-import br.unitins.topicos1.dto.EnderecoResponseDTO;
-import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Municipio;
-import br.unitins.topicos1.repository.EnderecoRepository;
 
 @ApplicationScoped
 public class EnderecoServiceImpl implements EnderecoService {

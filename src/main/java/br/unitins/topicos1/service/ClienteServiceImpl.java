@@ -1,6 +1,5 @@
 package br.unitins.topicos1.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,9 +13,6 @@ import jakarta.ws.rs.NotFoundException;
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
 import br.unitins.topicos1.model.Cliente;
-import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Produto;
-import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.repository.ClienteRepository;
 
 @ApplicationScoped
@@ -51,27 +47,6 @@ public class ClienteServiceImpl implements ClienteService {
         entity.setNome(clienteDTO.nome());
         entity.setEmail(clienteDTO.email());
         entity.setCpf(clienteDTO.cpf());
-        
-        entity.setEnderecos(new ArrayList<Endereco>());
-        for (Long idEndereco : clienteDTO.idEnderecos()) {
-            Endereco endereco = new Endereco();
-            endereco.setId(idEndereco);
-            entity.getEnderecos().add(endereco);
-        }
-
-        entity.setTelefones(new ArrayList<Telefone>());
-        for (Long idTelefones : clienteDTO.idTelefones()) {
-            Telefone telefone = new Telefone();
-            telefone.setId(idTelefones);
-            entity.getTelefones().add(telefone);
-        }
-
-        entity.setListaDesejo(new ArrayList<Produto>());
-        for (Long idListaDesejo : clienteDTO.idListaDesejo()) {
-            Produto produto = new Produto();
-            produto.setId(idListaDesejo);
-            entity.getListaDesejo().add(produto);
-        }
 
         clienteRepository.persist(entity);
 
@@ -88,30 +63,9 @@ public class ClienteServiceImpl implements ClienteService {
         clienteUpdate.setNome(clienteDTO.nome());
         clienteUpdate.setEmail(clienteDTO.email());
         clienteUpdate.setCpf(clienteDTO.cpf());
-        
-        clienteUpdate.setEnderecos(new ArrayList<Endereco>());
-        for (Long idEndereco : clienteDTO.idEnderecos()) {
-            Endereco endereco = new Endereco();
-            endereco.setId(idEndereco);
-            clienteUpdate.getEnderecos().add(endereco);
-        }
-
-        clienteUpdate.setTelefones(new ArrayList<Telefone>());
-        for (Long idTelefones : clienteDTO.idTelefones()) {
-            Telefone telefone = new Telefone();
-            telefone.setId(idTelefones);
-            clienteUpdate.getTelefones().add(telefone);
-        }
-
-        clienteUpdate.setListaDesejo(new ArrayList<Produto>());
-        for (Long idListaDesejo : clienteDTO.idListaDesejo()) {
-            Produto produto = new Produto();
-            produto.setId(idListaDesejo);
-            clienteUpdate.getListaDesejo().add(produto);
-        }
 
         clienteRepository.persist(clienteUpdate);
-        
+
         return new ClienteResponseDTO(clienteUpdate);
     }
 

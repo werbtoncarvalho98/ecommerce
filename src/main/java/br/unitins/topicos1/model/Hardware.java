@@ -7,19 +7,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
-import com.fasterxml.jackson.core.sym.Name;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Hardware extends Produto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String modelo;
     private Date lancamento;
     private Nivel nivel;
@@ -28,14 +19,6 @@ public class Hardware extends Produto {
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getModelo() {
         return modelo;

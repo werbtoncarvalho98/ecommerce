@@ -1,18 +1,12 @@
 package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Endereco {
+public class Endereco extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private boolean principal;
     private String logradouro;
     private String numero;
@@ -23,14 +17,6 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "municipio_id")
     private Municipio municipio;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public boolean isPrincipal() {
         return principal;

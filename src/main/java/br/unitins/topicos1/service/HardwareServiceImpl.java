@@ -3,13 +3,7 @@ package br.unitins.topicos1.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
-import jakarta.ws.rs.NotFoundException;
+
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
 import br.unitins.topicos1.model.Fabricante;
@@ -17,6 +11,13 @@ import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.model.Integridade;
 import br.unitins.topicos1.model.Nivel;
 import br.unitins.topicos1.repository.HardwareRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class HardwareServiceImpl implements HardwareService {

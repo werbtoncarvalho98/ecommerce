@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import br.unitins.topicos1.dto.MunicipioDTO;
+import br.unitins.topicos1.dto.MunicipioResponseDTO;
+import br.unitins.topicos1.model.Estado;
+import br.unitins.topicos1.model.Municipio;
+import br.unitins.topicos1.repository.EstadoRepository;
+import br.unitins.topicos1.repository.MunicipioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -11,13 +17,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-
-import br.unitins.topicos1.dto.MunicipioDTO;
-import br.unitins.topicos1.dto.MunicipioResponseDTO;
-import br.unitins.topicos1.model.Estado;
-import br.unitins.topicos1.model.Municipio;
-import br.unitins.topicos1.repository.EstadoRepository;
-import br.unitins.topicos1.repository.MunicipioRepository;
 
 @ApplicationScoped
 public class MunicipioServiceImpl implements MunicipioService {

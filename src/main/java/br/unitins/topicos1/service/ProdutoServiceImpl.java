@@ -3,6 +3,11 @@ package br.unitins.topicos1.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import br.unitins.topicos1.dto.ProdutoDTO;
+import br.unitins.topicos1.dto.ProdutoResponseDTO;
+import br.unitins.topicos1.model.Produto;
+import br.unitins.topicos1.repository.ProdutoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -10,10 +15,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-import br.unitins.topicos1.dto.ProdutoDTO;
-import br.unitins.topicos1.dto.ProdutoResponseDTO;
-import br.unitins.topicos1.model.Produto;
-import br.unitins.topicos1.repository.ProdutoRepository;
 
 @ApplicationScoped
 public class ProdutoServiceImpl implements ProdutoService {

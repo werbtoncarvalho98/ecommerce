@@ -3,6 +3,11 @@ package br.unitins.topicos1.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import br.unitins.topicos1.dto.FabricanteDTO;
+import br.unitins.topicos1.dto.FabricanteResponseDTO;
+import br.unitins.topicos1.model.Fabricante;
+import br.unitins.topicos1.repository.FabricanteRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -10,10 +15,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-import br.unitins.topicos1.dto.FabricanteDTO;
-import br.unitins.topicos1.dto.FabricanteResponseDTO;
-import br.unitins.topicos1.model.Fabricante;
-import br.unitins.topicos1.repository.FabricanteRepository;
 
 @ApplicationScoped
 public class FabricanteServiceImpl implements FabricanteService {

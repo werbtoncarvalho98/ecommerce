@@ -11,13 +11,13 @@ public record ClienteResponseDTO(
         Long id,
         String nome,
         String email,
-        String cpf,
-        List<Endereco> enderecos,
+        String cpf
+/*         List<Endereco> enderecos,
         List<Telefone> telefones,
-        List<Produto> listaDesejo) {
+        List<Produto> listaDesejo */) {
 
     public ClienteResponseDTO(Cliente cliente) {
-        this(cliente.getId(), cliente.getNome(), cliente.getEmail(), cliente.getCpf(), cliente.getEnderecos(),
-                cliente.getTelefones(), cliente.getListaDesejo());
+        this(cliente.getId(), cliente.getNome(), cliente.getEmail(), cliente.getCpf()/* , cliente.getEnderecos(),
+                cliente.getTelefones(), cliente.getListaDesejo() */);
     }
 }

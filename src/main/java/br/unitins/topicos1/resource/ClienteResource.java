@@ -2,6 +2,10 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import br.unitins.topicos1.application.Result;
+import br.unitins.topicos1.dto.ClienteDTO;
+import br.unitins.topicos1.dto.ClienteResponseDTO;
+import br.unitins.topicos1.service.ClienteService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -15,10 +19,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import br.unitins.topicos1.application.Result;
-import br.unitins.topicos1.dto.ClienteDTO;
-import br.unitins.topicos1.dto.ClienteResponseDTO;
-import br.unitins.topicos1.service.ClienteService;
 
 @Path("/clientes")
 @Consumes(MediaType.APPLICATION_JSON)

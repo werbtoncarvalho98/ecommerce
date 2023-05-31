@@ -2,6 +2,11 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import br.unitins.topicos1.application.Result;
+import br.unitins.topicos1.dto.EstadoDTO;
+import br.unitins.topicos1.dto.EstadoResponseDTO;
+import br.unitins.topicos1.service.EstadoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -16,10 +21,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import br.unitins.topicos1.application.Result;
-import br.unitins.topicos1.dto.EstadoDTO;
-import br.unitins.topicos1.dto.EstadoResponseDTO;
-import br.unitins.topicos1.service.EstadoService;
 
 @Path("/estados")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,6 +31,7 @@ public class EstadoResource {
     EstadoService estadoService;
 
     @GET
+    @RolesAllowed({"Admin","User"})
     public List<EstadoResponseDTO> getAll() {
         return estadoService.getAll();
     }
@@ -75,6 +77,7 @@ public class EstadoResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({"Admin"})
     public long count() {
         return estadoService.count();
     }
