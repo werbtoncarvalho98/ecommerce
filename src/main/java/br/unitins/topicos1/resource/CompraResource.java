@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.CompraDTO;
 import br.unitins.topicos1.dto.CompraResponseDTO;
@@ -29,6 +31,8 @@ public class CompraResource {
     @Inject
     CompraService compraService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @Inject
     Validator validator;
 
@@ -45,13 +49,26 @@ public class CompraResource {
 
     @POST
     public Response insert(CompraDTO dto) {
+        LOG.infof("Inserindo uma compra: %s", dto.totalcompra());
+        Result result = null;
+
         try {
             CompraResponseDTO compra = compraService.create(dto);
+            LOG.infof("Compra (%d) criada com sucesso.", compra.id());
+
             return Response.status(Status.CREATED).entity(compra).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir uma compra.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

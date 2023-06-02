@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
@@ -28,6 +30,8 @@ public class ClienteResource {
     @Inject
     ClienteService clienteService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     public List<ClienteResponseDTO> getAll() {
         return clienteService.getAll();
@@ -41,13 +45,23 @@ public class ClienteResource {
 
     @POST
     public Response insert(ClienteDTO dto) {
+        LOG.infof("Inserindo um cliente: %s", dto.nome());
+        Result result = null;
+
         try {
             ClienteResponseDTO cliente = clienteService.create(dto);
+            LOG.infof("Cliente (%d) criado com sucesso.", cliente.id());
             return Response.status(Status.CREATED).entity(cliente).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir um cliente.");
+            LOG.debug(e.getMessage());
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

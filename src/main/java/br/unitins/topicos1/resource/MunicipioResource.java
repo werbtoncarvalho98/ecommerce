@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.MunicipioDTO;
 import br.unitins.topicos1.dto.MunicipioResponseDTO;
@@ -28,6 +30,8 @@ public class MunicipioResource {
     @Inject
     MunicipioService municipioService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     public List<MunicipioResponseDTO> getAll() {
         return municipioService.getAll();
@@ -41,13 +45,26 @@ public class MunicipioResource {
 
     @POST
     public Response insert(MunicipioDTO dto) {
+        LOG.infof("Inserindo um municipio: %s", dto.nome());
+        Result result = null;
+
         try {
             MunicipioResponseDTO municipio = municipioService.create(dto);
+            LOG.infof("Municipio (%d) criado com sucesso.", municipio.nome());
+
             return Response.status(Status.CREATED).entity(municipio).build();
-        } catch(ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+        } catch (ConstraintViolationException e) {
+            LOG.error("Erro ao incluir um municipio.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.EstadoDTO;
 import br.unitins.topicos1.dto.EstadoResponseDTO;
@@ -30,6 +32,8 @@ public class EstadoResource {
     @Inject
     EstadoService estadoService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     @RolesAllowed({"Admin","User"})
     public List<EstadoResponseDTO> getAll() {
@@ -44,15 +48,26 @@ public class EstadoResource {
 
     @POST
     public Response insert(EstadoDTO dto) {
+        LOG.infof("Inserindo um estado: %s", dto.nome());
+        Result result = null;
+
         try {
             EstadoResponseDTO estado = estadoService.create(dto);
+            LOG.infof("Estado (%d) criado com sucesso.", estado.id());
+
             return Response.status(Status.CREATED).entity(estado).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir um estado.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
-            return Response.status(Status.NOT_FOUND).build();
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

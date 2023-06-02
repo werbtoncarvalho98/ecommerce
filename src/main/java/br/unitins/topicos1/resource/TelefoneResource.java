@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
@@ -28,6 +30,8 @@ public class TelefoneResource {
     @Inject
     TelefoneService telefoneService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     public List<TelefoneResponseDTO> getAll() {
         return telefoneService.getAll();
@@ -41,13 +45,26 @@ public class TelefoneResource {
 
     @POST
     public Response insert(TelefoneDTO dto) {
+        LOG.infof("Inserindo um telefone: %s", dto.numero());
+        Result result = null;
+
         try {
             TelefoneResponseDTO telefone = telefoneService.create(dto);
+            LOG.infof("Telefone (%d) criado com sucesso.", telefone.numero());
+
             return Response.status(Status.CREATED).entity(telefone).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir um telefone.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

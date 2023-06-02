@@ -10,8 +10,8 @@ public class Result {
     private String message;
     private boolean success;
 
-    public Result(String message) {
-        this.success = true;
+    public Result(String message, boolean success) {
+        this.success = success;
         this.message = message;
     }
 

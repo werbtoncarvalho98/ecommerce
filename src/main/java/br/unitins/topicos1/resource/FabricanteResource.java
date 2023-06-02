@@ -2,6 +2,8 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.FabricanteDTO;
 import br.unitins.topicos1.dto.FabricanteResponseDTO;
@@ -29,6 +31,8 @@ public class FabricanteResource {
     @Inject
     FabricanteService fabricanteService;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     public List<FabricanteResponseDTO> getAll() {
         return fabricanteService.getAll();
@@ -42,15 +46,26 @@ public class FabricanteResource {
 
     @POST
     public Response insert(FabricanteDTO dto) {
+        LOG.infof("Inserindo um fabricante: %s", dto.nome());
+        Result result = null;
+
         try {
             FabricanteResponseDTO fabricante = fabricanteService.create(dto);
+            LOG.infof("Fabricante (%d) criado com sucesso.", fabricante.nome());
+
             return Response.status(Status.CREATED).entity(fabricante).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir um fabricante.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
-            return Response.status(Status.NOT_FOUND).build();
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT

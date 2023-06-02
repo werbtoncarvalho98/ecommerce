@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.topicos1.application.Result;
@@ -48,6 +49,8 @@ public class ProdutoResource {
     @Inject
     JsonWebToken jwt;
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @GET
     public List<ProdutoResponseDTO> getAll() {
         return produtoService.getAll();
@@ -61,13 +64,26 @@ public class ProdutoResource {
 
     @POST
     public Response insert(ProdutoDTO dto) {
+        LOG.infof("Inserindo um produto: %s", dto.nome());
+        Result result = null;
+
         try {
             ProdutoResponseDTO produto = produtoService.create(dto);
+            LOG.infof("Produto (%d) criado com sucesso.", produto.nome());
+
             return Response.status(Status.CREATED).entity(produto).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao incluir um produto.");
+            LOG.debug(e.getMessage());
+
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
+            result = new Result(e.getMessage(), false);
         }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT
@@ -104,8 +120,6 @@ public class ProdutoResource {
     @GET
     @RolesAllowed({ "Admin", "User" })
     public Response getUsuario() {
-
-        // obtendo o login a partir do token
         String login = jwt.getSubject();
         UsuarioResponseDTO usuario = usuarioService.findByLogin(login);
 
@@ -122,7 +136,7 @@ public class ProdutoResource {
         try {
             imagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
         } catch (IOException e) {
-            Result result = new Result(e.getMessage());
+            Result result = new Result(e.getMessage(), false);
             return Response.status(Status.CONFLICT).entity(result).build();
         }
 
