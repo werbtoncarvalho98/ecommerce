@@ -41,83 +41,77 @@ public class UsuarioServiceImpl implements UsuarioService {
         return UsuarioResponseDTO.valueOf(pessoafisica);
     }
 
-    /*
-     * @Override
-     * 
-     * @Transactional
-     * public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) throws
-     * ConstraintViolationException {
-     * validar(usuarioDTO);
-     * 
-     * Usuario entity = new Usuario();
-     * entity.setLogin(usuarioDTO.login());
-     * entity.setSenha(usuarioDTO.senha());
-     * 
-     * entity.setEnderecos(new ArrayList<Endereco>());
-     * for (Long idEndereco : usuarioDTO.idEnderecos()) {
-     * Endereco endereco = new Endereco();
-     * endereco.setId(idEndereco);
-     * entity.getEnderecos().add(endereco);
-     * }
-     * 
-     * entity.setTelefones(new ArrayList<Telefone>());
-     * for (Long idTelefones : usuarioDTO.idTelefones()) {
-     * Telefone telefone = new Telefone();
-     * telefone.setId(idTelefones);
-     * entity.getTelefones().add(telefone);
-     * }
-     * 
-     * entity.setListaDesejo(new ArrayList<Produto>());
-     * for (Long idListaDesejo : usuarioDTO.idListaDesejo()) {
-     * Produto produto = new Produto();
-     * produto.setId(idListaDesejo);
-     * entity.getListaDesejo().add(produto);
-     * }
-     * 
-     * usuarioRepository.persist(entity);
-     * 
-     * return new UsuarioResponseDTO(entity);
-     * }
-     * 
-     * @Override
-     * 
-     * @Transactional
-     * public UsuarioResponseDTO update(Long id, UsuarioDTO UsuarioDTO) throws
-     * ConstraintViolationException {
-     * Usuario UsuarioUpdate = usuarioRepository.findById(id);
-     * if (UsuarioUpdate == null)
-     * throw new NotFoundException("Usuario não encontrado.");
-     * validar(UsuarioDTO);
-     * UsuarioUpdate.setNome(UsuarioDTO.nome());
-     * UsuarioUpdate.setEmail(UsuarioDTO.email());
-     * UsuarioUpdate.setCpf(UsuarioDTO.cpf());
-     * 
-     * UsuarioUpdate.setEnderecos(new ArrayList<Endereco>());
-     * for (Long idEndereco : UsuarioDTO.idEnderecos()) {
-     * Endereco endereco = new Endereco();
-     * endereco.setId(idEndereco);
-     * UsuarioUpdate.getEnderecos().add(endereco);
-     * }
-     * 
-     * UsuarioUpdate.setTelefones(new ArrayList<Telefone>());
-     * for (Long idTelefones : UsuarioDTO.idTelefones()) {
-     * Telefone telefone = new Telefone();
-     * telefone.setId(idTelefones);
-     * UsuarioUpdate.getTelefones().add(telefone);
-     * }
-     * 
-     * UsuarioUpdate.setListaDesejo(new ArrayList<Produto>());
-     * for (Long idListaDesejo : UsuarioDTO.idListaDesejo()) {
-     * Produto produto = new Produto();
-     * produto.setId(idListaDesejo);
-     * UsuarioUpdate.getListaDesejo().add(produto);
-     * }
-     * 
-     * usuarioRepository.persist(UsuarioUpdate);
-     * 
-     * return new UsuarioResponseDTO(UsuarioUpdate);
-     * }
-     */
+    // @Override
+    // @Transactional
+    // public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+    //     validar(usuarioDTO);
+
+    //     Usuario entity = new Usuario();
+    //     entity.setLogin(usuarioDTO.login());
+    //     entity.setSenha(usuarioDTO.senha());
+
+    //     entity.setEnderecos(new ArrayList<Endereco>());
+    //     for (Long idEndereco : usuarioDTO.idEnderecos()) {
+    //         Endereco endereco = new Endereco();
+    //         endereco.setId(idEndereco);
+    //         entity.getEnderecos().add(endereco);
+    //     }
+
+    //     entity.setTelefones(new ArrayList<Telefone>());
+    //     for (Long idTelefones : usuarioDTO.idTelefones()) {
+    //         Telefone telefone = new Telefone();
+    //         telefone.setId(idTelefones);
+    //         entity.getTelefones().add(telefone);
+    //     }
+
+    //     entity.setListaDesejo(new ArrayList<Produto>());
+    //     for (Long idListaDesejo : usuarioDTO.idListaDesejo()) {
+    //         Produto produto = new Produto();
+    //         produto.setId(idListaDesejo);
+    //         entity.getListaDesejo().add(produto);
+    //     }
+
+    //     usuarioRepository.persist(entity);
+
+    //     return new UsuarioResponseDTO(entity);
+    // }
+
+    // @Override
+    // @Transactional
+    // public UsuarioResponseDTO update(Long id, UsuarioDTO UsuarioDTO) throws ConstraintViolationException {
+    //     Usuario UsuarioUpdate = usuarioRepository.findById(id);
+    //     if (UsuarioUpdate == null)
+    //         throw new NotFoundException("Usuario não encontrado.");
+    //     validar(UsuarioDTO);
+    //     UsuarioUpdate.setNome(UsuarioDTO.nome());
+    //     UsuarioUpdate.setEmail(UsuarioDTO.email());
+    //     UsuarioUpdate.setCpf(UsuarioDTO.cpf());
+
+    //     UsuarioUpdate.setEnderecos(new ArrayList<Endereco>());
+    //     for (Long idEndereco : UsuarioDTO.idEnderecos()) {
+    //         Endereco endereco = new Endereco();
+    //         endereco.setId(idEndereco);
+    //         UsuarioUpdate.getEnderecos().add(endereco);
+    //     }
+
+    //     UsuarioUpdate.setTelefones(new ArrayList<Telefone>());
+    //     for (Long idTelefones : UsuarioDTO.idTelefones()) {
+    //         Telefone telefone = new Telefone();
+    //         telefone.setId(idTelefones);
+    //         UsuarioUpdate.getTelefones().add(telefone);
+    //     }
+
+    //     UsuarioUpdate.setListaDesejo(new ArrayList<Produto>());
+    //     for (Long idListaDesejo : UsuarioDTO.idListaDesejo()) {
+    //         Produto produto = new Produto();
+    //         produto.setId(idListaDesejo);
+    //         UsuarioUpdate.getListaDesejo().add(produto);
+    //     }
+
+    //     usuarioRepository.persist(UsuarioUpdate);
+
+    //     return new UsuarioResponseDTO(UsuarioUpdate);
+    // }
 
     @Override
     @Transactional
@@ -132,7 +126,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public long count() {
+    public Long count() {
         return usuarioRepository.count();
     }
 
@@ -147,12 +141,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null)
             throw new NotFoundException("Usuário não encontrado.");
         return UsuarioResponseDTO.valueOf(usuario);
-    }
-
-    @Override
-    public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override

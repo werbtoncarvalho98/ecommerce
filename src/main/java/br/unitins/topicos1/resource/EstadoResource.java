@@ -32,21 +32,23 @@ public class EstadoResource {
     @Inject
     EstadoService estadoService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(EstadoResource.class);
 
     @GET
-    @RolesAllowed({"Admin","User"})
+    @RolesAllowed({ "Admin", "User" })
     public List<EstadoResponseDTO> getAll() {
         return estadoService.getAll();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public EstadoResponseDTO findById(@PathParam("id") Long id) {
         return estadoService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(EstadoDTO dto) {
         LOG.infof("Inserindo um estado: %s", dto.nome());
         Result result = null;
@@ -72,6 +74,7 @@ public class EstadoResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, EstadoDTO dto) {
         try {
             EstadoResponseDTO estado = estadoService.update(id, dto);
@@ -85,6 +88,7 @@ public class EstadoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         estadoService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -92,13 +96,14 @@ public class EstadoResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({ "Admin" })
     public long count() {
         return estadoService.count();
     }
 
     @GET
     @Path("/search/{sigla}")
+    @RolesAllowed({ "Admin" })
     public List<EstadoResponseDTO> search(@PathParam("sigla") String sigla) {
         return estadoService.findBySigla(sigla);
     }

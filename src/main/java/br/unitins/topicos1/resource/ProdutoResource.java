@@ -49,7 +49,7 @@ public class ProdutoResource {
     @Inject
     JsonWebToken jwt;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(ProdutoResource.class);
 
     @GET
     public List<ProdutoResponseDTO> getAll() {
@@ -58,11 +58,13 @@ public class ProdutoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin", "User" })
     public ProdutoResponseDTO findById(@PathParam("id") Long id) {
         return produtoService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(ProdutoDTO dto) {
         LOG.infof("Inserindo um produto: %s", dto.nome());
         Result result = null;
@@ -88,6 +90,7 @@ public class ProdutoResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, ProdutoDTO dto) {
         try {
             ProdutoResponseDTO produto = produtoService.update(id, dto);
@@ -100,6 +103,7 @@ public class ProdutoResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         produtoService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -107,12 +111,14 @@ public class ProdutoResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
         return produtoService.count();
     }
 
     @GET
     @Path("/search/{nome}")
+    @RolesAllowed({ "Admin" })
     public List<ProdutoResponseDTO> search(@PathParam("nome") String nome) {
         return produtoService.findByNome(nome);
     }

@@ -5,11 +5,13 @@ import java.util.List;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.application.Result;
-import br.unitins.topicos1.dto.ClienteDTO;
-import br.unitins.topicos1.dto.ClienteResponseDTO;
-import br.unitins.topicos1.service.ClienteService;
+import br.unitins.topicos1.dto.PedidoDTO;
+import br.unitins.topicos1.dto.PedidoResponseDTO;
+import br.unitins.topicos1.service.PedidoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -22,42 +24,50 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/clientes")
+@Path("/pedidos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ClienteResource {
+public class PedidoResource {
 
     @Inject
-    ClienteService clienteService;
+    PedidoService pedidoService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(PedidoResource.class);
+
+    @Inject
+    Validator validator;
 
     @GET
-    public List<ClienteResponseDTO> getAll() {
-        return clienteService.getAll();
+    public List<PedidoResponseDTO> getAll() {
+        return pedidoService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public ClienteResponseDTO findById(@PathParam("id") Long id) {
-        return clienteService.findById(id);
+    @RolesAllowed({ "Admin", "User" })
+    public PedidoResponseDTO findById(@PathParam("id") Long id) {
+        return pedidoService.findById(id);
     }
 
     @POST
-    public Response insert(ClienteDTO dto) {
-        LOG.infof("Inserindo um cliente: %s", dto.nome());
+    @RolesAllowed({ "Admin" })
+    public Response insert(PedidoDTO dto) {
+        //LOG.infof("Inserindo um pedido: %s", dto.totalPedido());
         Result result = null;
 
         try {
-            ClienteResponseDTO cliente = clienteService.create(dto);
-            LOG.infof("Cliente (%d) criado com sucesso.", cliente.id());
-            return Response.status(Status.CREATED).entity(cliente).build();
+            PedidoResponseDTO pedido = pedidoService.create(dto);
+            LOG.infof("Pedido (%d) criada com sucesso.", pedido.data());
+
+            return Response.status(Status.CREATED).entity(pedido).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um cliente.");
+            LOG.error("Erro ao incluir uma pedido.");
             LOG.debug(e.getMessage());
+
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
+
             result = new Result(e.getMessage(), false);
         }
 
@@ -66,10 +76,11 @@ public class ClienteResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, ClienteDTO dto) {
+    @RolesAllowed({ "Admin" })
+    public Response update(@PathParam("id") Long id, PedidoDTO dto) {
         try {
-            ClienteResponseDTO cliente = clienteService.update(id, dto);
-            return Response.status(Status.NO_CONTENT).entity(cliente).build();
+            PedidoResponseDTO pedido = pedidoService.update(id, dto);
+            return Response.ok(pedido).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
@@ -78,20 +89,23 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
-        clienteService.delete(id);
+        pedidoService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
-        return clienteService.count();
+        return pedidoService.count();
     }
 
     @GET
-    @Path("/search/{cpf}")
-    public List<ClienteResponseDTO> search(@PathParam("cpf") String cpf) {
-        return clienteService.findByCpf(cpf);
+    @Path("/search/{status}")
+    @RolesAllowed({ "Admin" })
+    public List<PedidoResponseDTO> search(@PathParam("status") String status) {
+        return pedidoService.findByStatus(status);
     }
 }

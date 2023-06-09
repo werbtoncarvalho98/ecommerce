@@ -8,6 +8,7 @@ import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.MunicipioDTO;
 import br.unitins.topicos1.dto.MunicipioResponseDTO;
 import br.unitins.topicos1.service.MunicipioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -26,24 +27,27 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MunicipioResource {
-    
+
     @Inject
     MunicipioService municipioService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(MunicipioResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<MunicipioResponseDTO> getAll() {
         return municipioService.getAll();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public MunicipioResponseDTO findById(@PathParam("id") Long id) {
         return municipioService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(MunicipioDTO dto) {
         LOG.infof("Inserindo um municipio: %s", dto.nome());
         Result result = null;
@@ -69,11 +73,12 @@ public class MunicipioResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, MunicipioDTO dto) {
         try {
             MunicipioResponseDTO municipio = municipioService.update(id, dto);
             return Response.status(Status.NO_CONTENT).entity(municipio).build();
-        } catch(ConstraintViolationException e) {
+        } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
         }
@@ -81,23 +86,24 @@ public class MunicipioResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         municipioService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
-
     @GET
     @Path("/count")
-    public long count(){
+    @RolesAllowed({ "Admin" })
+    public long count() {
         return municipioService.count();
     }
 
     @GET
     @Path("/search/{nome}")
-    public List<MunicipioResponseDTO> search(@PathParam("nome") String nome){
+    @RolesAllowed({ "Admin" })
+    public List<MunicipioResponseDTO> search(@PathParam("nome") String nome) {
         return municipioService.findByNome(nome);
-        
+
     }
 }
-

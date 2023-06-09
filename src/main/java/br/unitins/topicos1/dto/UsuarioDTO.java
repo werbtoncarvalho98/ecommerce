@@ -1,12 +1,19 @@
 package br.unitins.topicos1.dto;
 
 import java.util.List;
+import java.util.Set;
 
-public record UsuarioDTO(Long id,
+import br.unitins.topicos1.model.Perfil;
+import br.unitins.topicos1.model.PessoaFisica;
+
+public record UsuarioDTO(
+        Long id,
         String login,
         String senha,
+        String imagem,
+        Set<Perfil> perfis,
         List<Long> idEnderecos,
         List<Long> idTelefones,
         List<Long> idListaDesejo,
-        Long idCliente) {
+        PessoaFisica pessoaFisica) {
 }

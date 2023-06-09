@@ -20,25 +20,25 @@ public class Usuario extends DefaultEntity {
     private String imagem;
 
     @ElementCollection
-    @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"))
+    @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
     @Column(name = "perfil", length = 30)
     private Set<Perfil> perfis;
 
     @OneToMany
-    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
+    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
     private List<Endereco> enderecos;
 
     @OneToMany
-    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "telefone_id"))
+    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "telefone_id"))
     private List<Telefone> telefones;
 
     @OneToMany
-    @JoinTable(name = "usuario_listadesejo", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "listadesejo_id"))
+    @JoinTable(name = "usuario_listadesejo", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "listadesejo_id"))
     private List<Produto> listaDesejo;
 
     @OneToOne
-    @JoinColumn(name = "cliente_id", unique = true)
-    private Cliente cliente;
+    @JoinColumn(name = "id_pessoa_fisica", unique = true)
+    private PessoaFisica pessoaFisica;
 
     public String getLogin() {
         return login;
@@ -96,11 +96,11 @@ public class Usuario extends DefaultEntity {
         this.listaDesejo = listaDesejo;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
     }
 }

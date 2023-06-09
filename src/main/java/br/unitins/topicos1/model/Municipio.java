@@ -10,7 +10,7 @@ public class Municipio extends DefaultEntity {
     private String nome;
 
     @ManyToOne
-    @JoinColumn(name = "estado_id")
+    @JoinColumn(name = "id_estado")
     private Estado estado;
 
     public String getNome() {

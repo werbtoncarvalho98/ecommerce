@@ -8,6 +8,7 @@ import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.FabricanteDTO;
 import br.unitins.topicos1.dto.FabricanteResponseDTO;
 import br.unitins.topicos1.service.FabricanteService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -31,7 +32,7 @@ public class FabricanteResource {
     @Inject
     FabricanteService fabricanteService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(FabricanteResource.class);
 
     @GET
     public List<FabricanteResponseDTO> getAll() {
@@ -40,11 +41,13 @@ public class FabricanteResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin", "User" })
     public FabricanteResponseDTO findById(@PathParam("id") Long id) {
         return fabricanteService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(FabricanteDTO dto) {
         LOG.infof("Inserindo um fabricante: %s", dto.nome());
         Result result = null;
@@ -70,6 +73,7 @@ public class FabricanteResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, FabricanteDTO dto) {
         try {
             FabricanteResponseDTO fabricante = fabricanteService.update(id, dto);
@@ -83,6 +87,7 @@ public class FabricanteResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         fabricanteService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -90,12 +95,14 @@ public class FabricanteResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
         return fabricanteService.count();
     }
 
     @GET
     @Path("/search/{nome}")
+    @RolesAllowed({ "Admin" })
     public List<FabricanteResponseDTO> search(@PathParam("nome") String nome) {
         return fabricanteService.findByNome(nome);
     }

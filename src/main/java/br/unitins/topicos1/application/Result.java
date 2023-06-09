@@ -10,6 +10,11 @@ public class Result {
     private String message;
     private boolean success;
 
+    public Result(String message) {
+        this.success = true;
+        this.message = message;
+    }
+
     public Result(String message, boolean success) {
         this.success = success;
         this.message = message;
@@ -29,4 +34,5 @@ public class Result {
     public boolean isSuccess() {
         return success;
     }
+
 }

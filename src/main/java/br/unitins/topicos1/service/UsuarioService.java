@@ -12,7 +12,9 @@ public interface UsuarioService {
 
     UsuarioResponseDTO findById(Long id);
 
-    UsuarioResponseDTO create(UsuarioDTO usuarioDTO);
+    // UsuarioResponseDTO create(UsuarioDTO usuarioDTO);
+
+    // UsuarioResponseDTO update(Long id, String nomeImagem);
 
     UsuarioResponseDTO update(Long id, String nomeImagem);
 
@@ -24,5 +26,5 @@ public interface UsuarioService {
 
     List<UsuarioResponseDTO> findByNome(String nome);
 
-    long count();
+    Long count();
 }

@@ -54,9 +54,9 @@ public class EnderecoServiceImpl implements EnderecoService {
         entity.setCep(enderecoDTO.cep());
         entity.setMunicipio(new Municipio());
         entity.getMunicipio().setId(enderecoDTO.idMunicipio());
-        
+
         enderecoRepository.persist(entity);
-        
+
         return new EnderecoResponseDTO(entity);
     }
 
@@ -76,7 +76,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         enderecoUpdate.setMunicipio(new Municipio());
         enderecoUpdate.getMunicipio().setId(enderecoDTO.idMunicipio());
         enderecoRepository.persist(enderecoUpdate);
-        
+
         return new EnderecoResponseDTO(enderecoUpdate);
     }
 

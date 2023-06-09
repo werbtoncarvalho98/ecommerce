@@ -8,6 +8,7 @@ import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
 import br.unitins.topicos1.service.TelefoneService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -30,20 +31,23 @@ public class TelefoneResource {
     @Inject
     TelefoneService telefoneService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(TelefoneResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<TelefoneResponseDTO> getAll() {
         return telefoneService.getAll();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public TelefoneResponseDTO findById(@PathParam("id") Long id) {
         return telefoneService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(TelefoneDTO dto) {
         LOG.infof("Inserindo um telefone: %s", dto.numero());
         Result result = null;
@@ -69,6 +73,7 @@ public class TelefoneResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, TelefoneDTO dto) {
         try {
             TelefoneResponseDTO telefone = telefoneService.update(id, dto);
@@ -81,6 +86,7 @@ public class TelefoneResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         telefoneService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -88,12 +94,14 @@ public class TelefoneResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
         return telefoneService.count();
     }
 
     @GET
     @Path("/search/{numero}")
+    @RolesAllowed({ "Admin" })
     public List<TelefoneResponseDTO> search(@PathParam("numero") String numero) {
         return telefoneService.findByNumero(numero);
     }

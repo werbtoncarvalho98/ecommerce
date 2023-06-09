@@ -7,7 +7,9 @@ import org.jboss.logging.Logger;
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
+import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.service.HardwareService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -30,20 +32,23 @@ public class HardwareResource {
     @Inject
     HardwareService hardwareService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(HardwareResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<HardwareResponseDTO> getAll() {
         return hardwareService.getAll();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public HardwareResponseDTO findById(@PathParam("id") Long id) {
         return hardwareService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(HardwareDTO dto) {
         LOG.infof("Inserindo um hardware: %s", dto.modelo());
         Result result = null;
@@ -69,6 +74,7 @@ public class HardwareResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, HardwareDTO dto) {
         try {
             HardwareResponseDTO hardware = hardwareService.update(id, dto);
@@ -81,6 +87,7 @@ public class HardwareResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         hardwareService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -88,12 +95,14 @@ public class HardwareResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
         return hardwareService.count();
     }
 
     @GET
     @Path("/search/{marca}")
+    @RolesAllowed({ "Admin" })
     public List<HardwareResponseDTO> search(@PathParam("marca") String marca) {
         return hardwareService.findByMarca(marca);
     }

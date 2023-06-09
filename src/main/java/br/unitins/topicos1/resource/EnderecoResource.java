@@ -8,6 +8,7 @@ import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.EnderecoDTO;
 import br.unitins.topicos1.dto.EnderecoResponseDTO;
 import br.unitins.topicos1.service.EnderecoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -30,7 +31,7 @@ public class EnderecoResource {
     @Inject
     EnderecoService enderecoService;
 
-    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+    private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
 
     @GET
     public List<EnderecoResponseDTO> getAll() {
@@ -39,11 +40,13 @@ public class EnderecoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "Admin", "User" })
     public EnderecoResponseDTO findById(@PathParam("id") Long id) {
         return enderecoService.findById(id);
     }
 
     @POST
+    @RolesAllowed({ "Admin" })
     public Response insert(EnderecoDTO dto) {
         LOG.infof("Inserindo um endereco: %s", dto.cep());
         Result result = null;
@@ -69,6 +72,7 @@ public class EnderecoResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, EnderecoDTO dto) {
         try {
             EnderecoResponseDTO endereco = enderecoService.update(id, dto);
@@ -81,6 +85,7 @@ public class EnderecoResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         enderecoService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
@@ -88,12 +93,14 @@ public class EnderecoResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({ "Admin" })
     public long count() {
         return enderecoService.count();
     }
 
     @GET
     @Path("/search/{cep}")
+    @RolesAllowed({ "Admin" })
     public List<EnderecoResponseDTO> search(@PathParam("cep") String cep) {
         return enderecoService.findByCep(cep);
     }
