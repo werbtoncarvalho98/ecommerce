@@ -2,13 +2,17 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import br.unitins.topicos1.application.Result;
+import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -37,28 +41,29 @@ public class UsuarioResource {
         return usuarioService.findById(id);
     }
 
-    // @POST
-    // public Response insert(UsuarioDTO dto) {
-    // try {
-    // UsuarioResponseDTO pessoafisica = usuariosService.create(dto);
-    // return Response.status(Status.CREATED).entity(pessoafisica).build();
-    // } catch(ConstraintViolationException e) {
-    // Result result = new Result(e.getConstraintViolations());
-    // return Response.status(Status.NOT_FOUND).entity(result).build();
-    // }
-    // }
+    @POST
+    public Response insert(UsuarioDTO dto) {
+        try {
+            UsuarioResponseDTO pessoafisica = usuarioService.create(dto);
+            return Response.status(Status.CREATED).entity(pessoafisica).build();
+        } catch (ConstraintViolationException e) {
+            Result result = new Result(e.getConstraintViolations());
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
 
     @PUT
-    // @Path("/{id}")
-    // public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
-    // try {
-    // usuariosService.update(id, dto);
-    // return Response.status(Status.NO_CONTENT).build();
-    // } catch(ConstraintViolationException e) {
-    // Result result = new Result(e.getConstraintViolations());
-    // return Response.status(Status.NOT_FOUND).entity(result).build();
-    // }
-    // }
+    @Path("/{id}")
+    @RolesAllowed({ "Admin" })
+    public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
+        try {
+            usuarioService.update(id, dto);
+            return Response.status(Status.NO_CONTENT).build();
+        } catch (ConstraintViolationException e) {
+            Result result = new Result(e.getConstraintViolations());
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
 
     @DELETE
     @Path("/{id}")
@@ -80,6 +85,5 @@ public class UsuarioResource {
     @RolesAllowed({ "Admin" })
     public List<UsuarioResponseDTO> search(@PathParam("nome") String nome) {
         return usuarioService.findByNome(nome);
-
     }
 }

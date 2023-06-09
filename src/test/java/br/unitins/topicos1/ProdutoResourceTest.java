@@ -6,15 +6,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import jakarta.inject.Inject;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.unitins.topicos1.dto.AuthUsuarioDTO;
 import br.unitins.topicos1.dto.ProdutoDTO;
 import br.unitins.topicos1.dto.ProdutoResponseDTO;
 import br.unitins.topicos1.service.ProdutoService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class ProdutoResourceTest {
@@ -22,9 +24,28 @@ public class ProdutoResourceTest {
     @Inject
     ProdutoService produtoService;
 
+    private String token;
+
+    @BeforeEach
+    public void setUp() {
+        var auth = new AuthUsuarioDTO("joao", "abc123");
+
+        Response response = (Response) given()
+                .contentType("application/json")
+                .body(auth)
+                .when().post("/auth")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        token = response.header("Authorization");
+    }
+
     @Test
     public void getAllTest() {
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().get("/produtos")
                 .then()
                 .statusCode(200);
@@ -35,6 +56,7 @@ public class ProdutoResourceTest {
         ProdutoDTO produtos = new ProdutoDTO("Placa de Video", "8GB GDDR6", 3499.90f, 100);
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(produtos)
                 .when().post("/produtos")
@@ -55,6 +77,7 @@ public class ProdutoResourceTest {
         ProdutoDTO produtosUpdate = new ProdutoDTO("Processador", "8 Nucleos 16 Threads", 2499.90f, 100);
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(produtosUpdate)
                 .when().put("/produtos/" + id)
@@ -74,6 +97,7 @@ public class ProdutoResourceTest {
         Long id = produtoService.create(produtos).id();
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().delete("/produtos/" + id)
                 .then()
                 .statusCode(204);

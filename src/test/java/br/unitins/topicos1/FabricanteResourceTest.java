@@ -6,15 +6,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import jakarta.inject.Inject;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.unitins.topicos1.dto.AuthUsuarioDTO;
 import br.unitins.topicos1.dto.FabricanteDTO;
 import br.unitins.topicos1.dto.FabricanteResponseDTO;
 import br.unitins.topicos1.service.FabricanteService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class FabricanteResourceTest {
@@ -22,9 +24,28 @@ public class FabricanteResourceTest {
     @Inject
     FabricanteService fabricanteService;
 
+    private String token;
+
+    @BeforeEach
+    public void setUp() {
+        var auth = new AuthUsuarioDTO("joao", "abc123");
+
+        Response response = (Response) given()
+                .contentType("application/json")
+                .body(auth)
+                .when().post("/auth")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        token = response.header("Authorization");
+    }
+
     @Test
     public void getAllTest() {
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().get("/fabricantes")
                 .then()
                 .statusCode(200);
@@ -35,6 +56,7 @@ public class FabricanteResourceTest {
         FabricanteDTO fabricantes = new FabricanteDTO("Nvidia", "nvidia.com");
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(fabricantes)
                 .when().post("/fabricantes")
@@ -53,6 +75,7 @@ public class FabricanteResourceTest {
         FabricanteDTO fabricantesUpdate = new FabricanteDTO("Gigabyte", "gigabyte.com");
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(fabricantesUpdate)
                 .when().put("/fabricantes/" + id)
@@ -70,6 +93,7 @@ public class FabricanteResourceTest {
         Long id = fabricanteService.create(fabricante).id();
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().delete("/fabricantes/" + id)
                 .then()
                 .statusCode(204);

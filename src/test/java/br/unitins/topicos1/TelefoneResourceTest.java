@@ -6,15 +6,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import jakarta.inject.Inject;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.unitins.topicos1.dto.AuthUsuarioDTO;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.TelefoneResponseDTO;
 import br.unitins.topicos1.service.TelefoneService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class TelefoneResourceTest {
@@ -22,9 +24,28 @@ public class TelefoneResourceTest {
     @Inject
     TelefoneService telefoneService;
 
+    private String token;
+
+    @BeforeEach
+    public void setUp() {
+        var auth = new AuthUsuarioDTO("joao", "abc123");
+
+        Response response = (Response) given()
+                .contentType("application/json")
+                .body(auth)
+                .when().post("/auth")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        token = response.header("Authorization");
+    }
+
     @Test
     public void getAllTest() {
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().get("/telefones")
                 .then()
                 .statusCode(200);
@@ -35,6 +56,7 @@ public class TelefoneResourceTest {
         TelefoneDTO telefones = new TelefoneDTO("63", "9 1234-5678");
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(telefones)
                 .when().post("/telefones")
@@ -53,6 +75,7 @@ public class TelefoneResourceTest {
         TelefoneDTO telefonesUpdate = new TelefoneDTO("99", "9 8765-4321");
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(telefonesUpdate)
                 .when().put("/telefones/" + id)
@@ -71,6 +94,7 @@ public class TelefoneResourceTest {
         Long id = telefoneService.create(telefones).id();
 
         given()
+                .header("Authorization", "Bearer " + token)
                 .when().delete("/telefones/" + id)
                 .then()
                 .statusCode(204);

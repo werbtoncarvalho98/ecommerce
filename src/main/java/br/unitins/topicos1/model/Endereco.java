@@ -15,7 +15,7 @@ public class Endereco extends DefaultEntity {
     private String cep;
 
     @ManyToOne
-    @JoinColumn(name = "municipio_id")
+    @JoinColumn(name = "id_municipio")
     private Municipio municipio;
 
     public boolean isPrincipal() {

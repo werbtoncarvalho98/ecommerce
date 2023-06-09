@@ -2,14 +2,19 @@ package br.unitins.topicos1.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.ibm.asyncutil.iteration.AsyncIterator.End;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.model.Endereco;
@@ -47,8 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     //     validar(usuarioDTO);
 
     //     Usuario entity = new Usuario();
+
     //     entity.setLogin(usuarioDTO.login());
     //     entity.setSenha(usuarioDTO.senha());
+    //     entity.setImagem(usuarioDTO.imagem());
+    //     entity.setPerfis(usuarioDTO.perfis());
 
     //     entity.setEnderecos(new ArrayList<Endereco>());
     //     for (Long idEndereco : usuarioDTO.idEnderecos()) {
@@ -82,10 +90,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     //     Usuario UsuarioUpdate = usuarioRepository.findById(id);
     //     if (UsuarioUpdate == null)
     //         throw new NotFoundException("Usuario não encontrado.");
+
     //     validar(UsuarioDTO);
-    //     UsuarioUpdate.setNome(UsuarioDTO.nome());
-    //     UsuarioUpdate.setEmail(UsuarioDTO.email());
-    //     UsuarioUpdate.setCpf(UsuarioDTO.cpf());
+
+    //     UsuarioUpdate.setLogin(UsuarioDTO.login());
+    //     UsuarioUpdate.setSenha(UsuarioDTO.senha());
+    //     UsuarioUpdate.setImagem(UsuarioDTO.imagem());
 
     //     UsuarioUpdate.setEnderecos(new ArrayList<Endereco>());
     //     for (Long idEndereco : UsuarioDTO.idEnderecos()) {
@@ -151,5 +161,24 @@ public class UsuarioServiceImpl implements UsuarioService {
         entity.setImagem(imagem);
 
         return UsuarioResponseDTO.valueOf(entity);
+    }
+
+    private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(usuarioDTO);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+
+    @Override
+    public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    }
+
+    @Override
+    public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 }

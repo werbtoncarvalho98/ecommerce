@@ -12,9 +12,9 @@ public interface UsuarioService {
 
     UsuarioResponseDTO findById(Long id);
 
-    // UsuarioResponseDTO create(UsuarioDTO usuarioDTO);
+    UsuarioResponseDTO create(UsuarioDTO usuarioDTO);
 
-    // UsuarioResponseDTO update(Long id, String nomeImagem);
+    UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDTO);
 
     UsuarioResponseDTO update(Long id, String nomeImagem);
 

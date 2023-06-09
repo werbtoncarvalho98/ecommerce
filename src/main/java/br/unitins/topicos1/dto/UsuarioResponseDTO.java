@@ -32,8 +32,14 @@ public record UsuarioResponseDTO(
                     usuario.getListaDesejo(),
                     usuario.getPessoaFisica());
 
-        return new UsuarioResponseDTO(usuario.getId(), usuario.getLogin(), usuario.getSenha(), usuario.getImagem(),
-                usuario.getPerfis(), usuario.getEnderecos(),
-                usuario.getTelefones(), usuario.getListaDesejo(), usuario.getPessoaFisica());
+        return new UsuarioResponseDTO(usuario.getId(),
+                usuario.getLogin(),
+                usuario.getSenha(),
+                usuario.getImagem(),
+                usuario.getPerfis(),
+                usuario.getEnderecos(),
+                usuario.getTelefones(),
+                usuario.getListaDesejo(),
+                usuario.getPessoaFisica());
     }
 }

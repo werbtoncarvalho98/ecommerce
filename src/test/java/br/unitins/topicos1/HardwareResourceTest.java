@@ -6,10 +6,10 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import jakarta.inject.Inject;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.unitins.topicos1.dto.AuthUsuarioDTO;
 import br.unitins.topicos1.dto.FabricanteDTO;
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
@@ -18,6 +18,8 @@ import br.unitins.topicos1.service.FabricanteService;
 import br.unitins.topicos1.service.HardwareService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class HardwareResourceTest {
@@ -28,9 +30,28 @@ public class HardwareResourceTest {
         @Inject
         FabricanteService fabricanteService;
 
+        private String token;
+
+        @BeforeEach
+        public void setUp() {
+                var auth = new AuthUsuarioDTO("joao", "abc123");
+
+                Response response = (Response) given()
+                                .contentType("application/json")
+                                .body(auth)
+                                .when().post("/auth")
+                                .then()
+                                .statusCode(200)
+                                .extract()
+                                .response();
+
+                token = response.header("Authorization");
+        }
+
         @Test
         public void getAllTest() {
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().get("/hardwares")
                                 .then()
                                 .statusCode(200);
@@ -38,16 +59,14 @@ public class HardwareResourceTest {
 
         @Test
         public void testInsert() {
-                Long idFabricante = fabricanteService.create(new FabricanteDTO("Nvidia", "nvidia.com")).id();
+                Long id = fabricanteService.create(new FabricanteDTO("Nvidia", "nvidia.com")).id();
 
-                HardwareDTO hardware = new HardwareDTO(
-                                "RTX 2060",
-                                null,
-                                1,
-                                1,
-                                idFabricante);
+                HardwareDTO hardware = new HardwareDTO("RTX 2060", null, 1, 1, id);
+
+                FabricanteDTO fabricanteDTO = new FabricanteDTO("Nvidia", "nvidia.com");
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .contentType(ContentType.JSON)
                                 .body(hardware)
                                 .when().post("/hardwares")
@@ -58,7 +77,7 @@ public class HardwareResourceTest {
                                                 "lancamento", is(null),
                                                 "nivel", is(1),
                                                 "integridade", is(1),
-                                                "fabricante", notNullValue(Fabricante.class));
+                                                "fabricante", notNullValue());
         }
 
         @Test
@@ -69,6 +88,7 @@ public class HardwareResourceTest {
                 HardwareDTO hardwareUpdate = new HardwareDTO("RX 6600 XT", null, 3, 1, null);
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .contentType(ContentType.JSON)
                                 .body(hardwareUpdate)
                                 .when().put("/hardwares/" + id)
@@ -89,6 +109,7 @@ public class HardwareResourceTest {
                 Long id = hardwareService.create(hardware).id();
 
                 given()
+                                .header("Authorization", "Bearer " + token)
                                 .when().delete("/hardwares/" + id)
                                 .then()
                                 .statusCode(204);
