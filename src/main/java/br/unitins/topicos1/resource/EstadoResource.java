@@ -42,7 +42,7 @@ public class EstadoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public EstadoResponseDTO findById(@PathParam("id") Long id) {
         return estadoService.findById(id);
     }
@@ -96,14 +96,14 @@ public class EstadoResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return estadoService.count();
     }
 
     @GET
     @Path("/search/{sigla}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<EstadoResponseDTO> search(@PathParam("sigla") String sigla) {
         return estadoService.findBySigla(sigla);
     }

@@ -8,12 +8,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class UsuarioRepository implements PanacheRepository<Usuario> {
-
     public List<Usuario> findByNome(String nome) {
         if (nome == null)
             return null;
-
-        return find("UPPER(cliente.nome) LIKE ?1 ", "%" + nome.toUpperCase() + "%").list();
+        return find("UPPER(nome) LIKE ?1 ", "%" + nome.toUpperCase() + "%").list();
     }
 
     public Usuario findByLoginAndSenha(String login, String senha) {

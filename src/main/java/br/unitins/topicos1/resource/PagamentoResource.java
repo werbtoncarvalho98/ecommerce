@@ -2,16 +2,18 @@ package br.unitins.topicos1.resource;
 
 import java.util.List;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.PagamentoDTO;
 import br.unitins.topicos1.dto.PagamentoResponseDTO;
+import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.service.PagamentoService;
+import br.unitins.topicos1.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -32,59 +34,80 @@ public class PagamentoResource {
     @Inject
     PagamentoService pagamentoService;
 
-    private static final Logger LOG = Logger.getLogger(MunicipioResource.class);
+    @Inject
+    JsonWebToken jwt;
 
     @Inject
-    Validator validator;
+    UsuarioService usuarioService;
+
+    private static final Logger LOG = Logger.getLogger(PagamentoResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
+    public Response getUsuario() {
+
+        // obtendo o login a partir do token
+        String login = jwt.getSubject();
+        UsuarioResponseDTO usuario = usuarioService.findByLogin(login);
+
+        return Response.ok(usuario).build();
+    }
+
+    @GET
+    @RolesAllowed({ "Admin" })
     public List<PagamentoResponseDTO> getAll() {
+        LOG.info("Buscando todos os pagamentos.");
+        LOG.debug("ERRO DE DEBUG.");
         return pagamentoService.getAll();
+
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "Admin", "User" })
+    @RolesAllowed({ "Admin" })
     public PagamentoResponseDTO findById(@PathParam("id") Long id) {
         return pagamentoService.findById(id);
     }
 
     @POST
     @RolesAllowed({ "Admin" })
-    public Response insert(PagamentoDTO dto) {
-        //LOG.infof("Inserindo um pagamento: %s", dto.totalPagamento());
+    public Response insert(PagamentoDTO pagamentoDTO) {
+        LOG.infof("Inserindo um pagamento: %s", pagamentoDTO.valor(), pagamentoDTO.pedido());
         Result result = null;
-
         try {
-            PagamentoResponseDTO pagamento = pagamentoService.create(dto);
-            LOG.infof("Pagamento (%d) criado com sucesso.", pagamento.valor());
-
+            PagamentoResponseDTO pagamento = pagamentoService.create(pagamentoDTO);
+            LOG.infof("pagamento (%d) criado com sucesso.", pagamento.id());
             return Response.status(Status.CREATED).entity(pagamento).build();
         } catch (ConstraintViolationException e) {
             LOG.error("Erro ao incluir um pagamento.");
             LOG.debug(e.getMessage());
-
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
-
             result = new Result(e.getMessage(), false);
         }
-
         return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
-    public Response update(@PathParam("id") Long id, PagamentoDTO dto) {
+    public Response update(@PathParam("id") Long id, PagamentoDTO pagamentoDTO) {
+        LOG.infof("Atualizando um pagamento: %s", pagamentoDTO.valor(), pagamentoDTO.pedido());
+        Result result = null;
         try {
-            PagamentoResponseDTO pagamento = pagamentoService.update(id, dto);
-            return Response.ok(pagamento).build();
+            PagamentoResponseDTO pagamento = pagamentoService.update(id, pagamentoDTO);
+            LOG.infof("pagamento (%d) atualizado com sucesso.", pagamento.id());
+            return Response.status(Status.NO_CONTENT).entity(pagamento).build();
         } catch (ConstraintViolationException e) {
-            Result result = new Result(e.getConstraintViolations());
-            return Response.status(Status.NOT_FOUND).entity(result).build();
+            LOG.error("Erro ao atualizar um pagamento.");
+            LOG.debug(e.getMessage());
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+            result = new Result(e.getMessage(), false);
         }
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @DELETE
@@ -92,7 +115,23 @@ public class PagamentoResource {
     @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
         pagamentoService.delete(id);
-        return Response.status(Status.NO_CONTENT).build();
+        return Response
+                .status(Status.NO_CONTENT)
+                .build();
+    }
+
+    @GET
+    @Path("/search/{id}")
+    @RolesAllowed({ "Admin" })
+    public PagamentoResponseDTO searchId(@PathParam("id") Long id) {
+        return pagamentoService.findById(id);
+    }
+
+    @GET
+    @Path("/search/{valor}")
+    @RolesAllowed({ "Admin" })
+    public List<PagamentoResponseDTO> search(@PathParam("pagamento") Double valor) {
+        return pagamentoService.findByValor(valor);
     }
 
     @GET
@@ -102,10 +141,4 @@ public class PagamentoResource {
         return pagamentoService.count();
     }
 
-    @GET
-    @Path("/search/{valor}")
-    @RolesAllowed({ "Admin" })
-    public List<PagamentoResponseDTO> search(@PathParam("valor") Double valor) {
-        return pagamentoService.findByValor(valor);
-    }
 }

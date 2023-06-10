@@ -9,29 +9,29 @@ public class Result {
 
     private String message;
     private boolean success;
-
-    public Result(String message) {
-        this.success = true;
+    
+    public Result(String message, boolean success) {
         this.message = message;
+        this.success = success;
     }
 
-    public Result(String message, boolean success) {
-        this.success = success;
+    public Result(String message){
+        this.success = true;
         this.message = message;
     }
 
     public Result(Set<? extends ConstraintViolation<?>> violations) {
         this.success = false;
         this.message = violations.stream()
-                .map(cv -> cv.getMessage())
-                .collect(Collectors.joining(", "));
+             .map(cv -> cv.getMessage())
+             .collect(Collectors.joining(", "));
     }
 
     public String getMessage() {
         return message;
     }
 
-    public boolean isSuccess() {
+    public boolean isSucces() {
         return success;
     }
 

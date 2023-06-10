@@ -1,11 +1,11 @@
 package br.unitins.topicos1.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public record HardwareDTO(
-                String modelo,
-                Date lancamento,
-                Integer nivel,
-                Integer integridade,
-                Long idFabricante) {
+        String modelo,
+        LocalDate lancamento,
+        Integer idNivel,
+        Integer idIntegridade,
+        Long fabricante) {
 }

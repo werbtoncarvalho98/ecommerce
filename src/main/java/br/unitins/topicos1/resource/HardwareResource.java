@@ -7,7 +7,6 @@ import org.jboss.logging.Logger;
 import br.unitins.topicos1.application.Result;
 import br.unitins.topicos1.dto.HardwareDTO;
 import br.unitins.topicos1.dto.HardwareResponseDTO;
-import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.service.HardwareService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -42,7 +41,7 @@ public class HardwareResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public HardwareResponseDTO findById(@PathParam("id") Long id) {
         return hardwareService.findById(id);
     }
@@ -95,14 +94,14 @@ public class HardwareResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return hardwareService.count();
     }
 
     @GET
     @Path("/search/{marca}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<HardwareResponseDTO> search(@PathParam("marca") String marca) {
         return hardwareService.findByMarca(marca);
     }

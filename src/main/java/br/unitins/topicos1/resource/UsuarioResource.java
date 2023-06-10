@@ -8,6 +8,7 @@ import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -21,31 +22,34 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/usuarios")
+@Path("/clientes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UsuarioResource {
 
     @Inject
-    UsuarioService usuarioService;
+    UsuarioService clienteService;
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<UsuarioResponseDTO> getAll() {
-        return usuarioService.getAll();
+        return clienteService.getAll();
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed({ "Admin", "User" })
     public UsuarioResponseDTO findById(@PathParam("id") Long id) {
-        return usuarioService.findById(id);
+        return clienteService.findById(id);
     }
 
     @POST
-    public Response insert(UsuarioDTO dto) {
+    @Transactional
+    @RolesAllowed({ "Admin" })
+    public Response insert(UsuarioDTO clienteDTO) {
         try {
-            UsuarioResponseDTO pessoafisica = usuarioService.create(dto);
-            return Response.status(Status.CREATED).entity(pessoafisica).build();
+            UsuarioResponseDTO cliente = clienteService.create(clienteDTO);
+            return Response.status(Status.CREATED).entity(cliente).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
@@ -55,10 +59,13 @@ public class UsuarioResource {
     @PUT
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
-    public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response update(@PathParam("id") Long id, UsuarioDTO clienteDTO) {
         try {
-            usuarioService.update(id, dto);
-            return Response.status(Status.NO_CONTENT).build();
+            UsuarioResponseDTO cliente = clienteService.update(id, clienteDTO);
+            return Response.ok(cliente).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
@@ -69,21 +76,21 @@ public class UsuarioResource {
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
-        usuarioService.delete(id);
+        clienteService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
-        return usuarioService.count();
+        return clienteService.count();
     }
 
     @GET
     @Path("/search/{nome}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<UsuarioResponseDTO> search(@PathParam("nome") String nome) {
-        return usuarioService.findByNome(nome);
+        return clienteService.findByNome(nome);
     }
 }

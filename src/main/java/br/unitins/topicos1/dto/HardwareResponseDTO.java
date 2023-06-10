@@ -1,8 +1,6 @@
 package br.unitins.topicos1.dto;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDate;
 
 import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.model.Integridade;
@@ -12,8 +10,8 @@ public record HardwareResponseDTO(
 
         Long id,
         String modelo,
-        Date lancamento,
-        @JsonInclude(JsonInclude.Include.NON_NULL) Nivel nivel,
+        LocalDate lancamento,
+        Nivel nivel,
         Integridade integridade,
         FabricanteResponseDTO fabricante) {
 

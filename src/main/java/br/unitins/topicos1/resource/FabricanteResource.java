@@ -35,6 +35,7 @@ public class FabricanteResource {
     private static final Logger LOG = Logger.getLogger(FabricanteResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<FabricanteResponseDTO> getAll() {
         return fabricanteService.getAll();
     }
@@ -95,14 +96,14 @@ public class FabricanteResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return fabricanteService.count();
     }
 
     @GET
     @Path("/search/{nome}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<FabricanteResponseDTO> search(@PathParam("nome") String nome) {
         return fabricanteService.findByNome(nome);
     }

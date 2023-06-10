@@ -1,10 +1,13 @@
 package br.unitins.topicos1.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
@@ -12,12 +15,16 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 public class Hardware extends Produto {
 
     private String modelo;
-    private Date lancamento;
+    private LocalDate lancamento;
+
+    @Enumerated(EnumType.STRING)
     private Nivel nivel;
+
+    @Enumerated(EnumType.STRING)
     private Integridade integridade;
-    
-    @ManyToOne
-    @JoinColumn(name = "fabricante_id")
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_fabricante")
     private Fabricante fabricante;
 
     public String getModelo() {
@@ -28,11 +35,11 @@ public class Hardware extends Produto {
         this.modelo = modelo;
     }
 
-    public Date getLancamento() {
+    public LocalDate getLancamento() {
         return lancamento;
     }
 
-    public void setLancamento(Date lancamento) {
+    public void setLancamento(LocalDate lancamento) {
         this.lancamento = lancamento;
     }
 

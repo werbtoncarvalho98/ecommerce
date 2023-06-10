@@ -1,6 +1,6 @@
 package br.unitins.topicos1.dto;
 
 public record TelefoneDTO(
-                String ddd,
-                String numero) {
+        String ddd,
+        String numero) {
 }

@@ -50,10 +50,10 @@ public class HardwareServiceImpl implements HardwareService {
         Hardware entity = new Hardware();
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
-        entity.setNivel(Nivel.valueOf(hardwareDTO.nivel()));
-        entity.setIntegridade(Integridade.valueOf(hardwareDTO.integridade()));
+        entity.setNivel(Nivel.valueOf(hardwareDTO.idNivel()));
+        entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         entity.setFabricante(new Fabricante());
-        entity.getFabricante().setId(hardwareDTO.idFabricante());
+        entity.getFabricante().setId(hardwareDTO.fabricante());
 
         hardwareRepository.persist(entity);
         
@@ -69,10 +69,10 @@ public class HardwareServiceImpl implements HardwareService {
         validar(hardwareDTO);
         hardwareUpdate.setModelo(hardwareDTO.modelo());
         hardwareUpdate.setLancamento(hardwareDTO.lancamento());
-        hardwareUpdate.setNivel(Nivel.valueOf(hardwareDTO.nivel()));
-        hardwareUpdate.setIntegridade(Integridade.valueOf(hardwareDTO.integridade()));
+        hardwareUpdate.setNivel(Nivel.valueOf(hardwareDTO.idNivel()));
+        hardwareUpdate.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         hardwareUpdate.setFabricante(new Fabricante());
-        hardwareUpdate.getFabricante().setId(hardwareDTO.idFabricante());
+        hardwareUpdate.getFabricante().setId(hardwareDTO.fabricante());
         hardwareRepository.persist(hardwareUpdate);
         
         return new HardwareResponseDTO(hardwareUpdate);

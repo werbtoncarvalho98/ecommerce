@@ -3,6 +3,11 @@ package br.unitins.topicos1.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import br.unitins.topicos1.dto.PagamentoDTO;
+import br.unitins.topicos1.dto.PagamentoResponseDTO;
+import br.unitins.topicos1.model.Pagamento;
+import br.unitins.topicos1.repository.PagamentoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -10,10 +15,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-import br.unitins.topicos1.dto.PagamentoDTO;
-import br.unitins.topicos1.dto.PagamentoResponseDTO;
-import br.unitins.topicos1.model.Pagamento;
-import br.unitins.topicos1.repository.PagamentoRepository;
 
 @ApplicationScoped
 public class PagamentoServiceImpl implements PagamentoService {
@@ -34,8 +35,15 @@ public class PagamentoServiceImpl implements PagamentoService {
     public PagamentoResponseDTO findById(Long id) {
         Pagamento pagamento = pagamentoRepository.findById(id);
         if (pagamento == null)
-            return null;
+            throw new NotFoundException("Pagamento não encontrado.");
         return new PagamentoResponseDTO(pagamento);
+    }
+
+    private void validar(PagamentoDTO pagamentoDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<PagamentoDTO>> violations = validator.validate(pagamentoDTO);
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
     }
 
     @Override
@@ -46,9 +54,9 @@ public class PagamentoServiceImpl implements PagamentoService {
         Pagamento entity = new Pagamento();
 
         entity.setValor(pagamentoDTO.valor());
+        entity.setPedido(pagamentoDTO.pedido());
 
         pagamentoRepository.persist(entity);
-
         return new PagamentoResponseDTO(entity);
     }
 
@@ -58,21 +66,13 @@ public class PagamentoServiceImpl implements PagamentoService {
         Pagamento pagamentoUpdate = pagamentoRepository.findById(id);
         if (pagamentoUpdate == null)
             throw new NotFoundException("Pagamento não encontrado.");
-
         validar(pagamentoDTO);
 
         pagamentoUpdate.setValor(pagamentoDTO.valor());
+        pagamentoUpdate.setPedido(pagamentoDTO.pedido());
 
         pagamentoRepository.persist(pagamentoUpdate);
-
         return new PagamentoResponseDTO(pagamentoUpdate);
-    }
-
-    private void validar(PagamentoDTO pagamentoDTO) throws ConstraintViolationException {
-        Set<ConstraintViolation<PagamentoDTO>> violations = validator.validate(pagamentoDTO);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
     }
 
     @Override
@@ -88,7 +88,8 @@ public class PagamentoServiceImpl implements PagamentoService {
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return pagamentoRepository.count();
     }
+
 }

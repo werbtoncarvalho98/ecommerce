@@ -123,4 +123,34 @@ public class HardwareResourceTest {
                         assertNull(hardwareResponse);
                 }
         }
+
+        @Test
+        public void testFindById() {
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/estados/1")
+                                .then()
+                                .statusCode(200)
+                                .body(notNullValue());
+        }
+
+        @Test
+        public void testCount() {
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/estados/count")
+                                .then()
+                                .statusCode(200)
+                                .body(notNullValue());
+        }
+
+        @Test
+        public void testSearch() {
+                given()
+                                .header("Authorization", "Bearer " + token)
+                                .when().get("/estados/search/tocantins")
+                                .then()
+                                .statusCode(200)
+                                .body(notNullValue());
+        }
 }

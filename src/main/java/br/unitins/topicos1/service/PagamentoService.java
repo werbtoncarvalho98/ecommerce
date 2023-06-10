@@ -6,7 +6,7 @@ import br.unitins.topicos1.dto.PagamentoDTO;
 import br.unitins.topicos1.dto.PagamentoResponseDTO;
 
 public interface PagamentoService {
-
+    
     List<PagamentoResponseDTO> getAll();
 
     PagamentoResponseDTO findById(Long id);
@@ -19,5 +19,5 @@ public interface PagamentoService {
 
     List<PagamentoResponseDTO> findByValor(Double valor);
 
-    Long count();
+    long count();
 }

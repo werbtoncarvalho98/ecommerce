@@ -6,10 +6,10 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.application.Result;
-import br.unitins.topicos1.dto.PedidoDTO;
-import br.unitins.topicos1.dto.PedidoResponseDTO;
+import br.unitins.topicos1.dto.ItemPedidoDTO;
+import br.unitins.topicos1.dto.ItemPedidoResponseDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
-import br.unitins.topicos1.service.PedidoService;
+import br.unitins.topicos1.service.ItemPedidoService;
 import br.unitins.topicos1.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -26,13 +26,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/compras")
+@Path("/itemcompras")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PedidoResource {
+public class ItemPedidoResource {
 
     @Inject
-    PedidoService compraService;
+    ItemPedidoService itemPedidoService;
 
     @Inject
     JsonWebToken jwt;
@@ -40,7 +40,7 @@ public class PedidoResource {
     @Inject
     UsuarioService usuarioService;
 
-    private static final Logger LOG = Logger.getLogger(PedidoResource.class);
+    private static final Logger LOG = Logger.getLogger(ItemPedidoResource.class);
 
     @GET
     @RolesAllowed({ "Admin", "User" })
@@ -55,30 +55,30 @@ public class PedidoResource {
 
     @GET
     @RolesAllowed({ "Admin" })
-    public List<PedidoResponseDTO> getAll() {
+    public List<ItemPedidoResponseDTO> getAll() {
         LOG.info("Buscando todas as compras.");
         LOG.debug("ERRO DE DEBUG.");
-        return compraService.getAll();
+        return itemPedidoService.getAll();
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
-    public PedidoResponseDTO findById(@PathParam("id") Long id) {
-        return compraService.findById(id);
+    public ItemPedidoResponseDTO findById(@PathParam("id") Long id) {
+        return itemPedidoService.findById(id);
     }
 
     @POST
     @RolesAllowed({ "Admin" })
-    public Response insert(PedidoDTO compradto) {
-        LOG.infof("Inserindo uma compra: %s", compradto.getClass());
+    public Response insert(ItemPedidoDTO itemPedidoDTO) {
+        LOG.infof("Inserindo um item compra: %s", itemPedidoDTO.getClass());
         Result result = null;
         try {
-            PedidoResponseDTO compra = compraService.create(compradto);
-            LOG.infof("Pedido (%d) criada com sucesso.", compra.id());
-            return Response.status(Status.CREATED).entity(compra).build();
+            ItemPedidoResponseDTO itemPedido = itemPedidoService.create(itemPedidoDTO);
+            LOG.infof("Brinquedo (%d) criado com sucesso.", itemPedido.id());
+            return Response.status(Status.CREATED).entity(itemPedido).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir uma compra.");
+            LOG.error("Erro ao incluir um item compra.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
@@ -91,15 +91,15 @@ public class PedidoResource {
     @PUT
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
-    public Response update(@PathParam("id") Long id, PedidoDTO compradto) {
-        LOG.infof("Atualizando uma compra: %s", compradto.getClass());
+    public Response update(@PathParam("id") Long id, ItemPedidoDTO itemPedidoDTO) {
+        LOG.infof("Atualizando um item compra: %s", itemPedidoDTO.getClass());
         Result result = null;
         try {
-            PedidoResponseDTO compra = compraService.update(id, compradto);
-            LOG.infof("Pedido (%d) atualizada com sucesso.", compra.id());
-            return Response.status(Status.NO_CONTENT).entity(compra).build();
+            ItemPedidoResponseDTO itemPedido = itemPedidoService.update(id, itemPedidoDTO);
+            LOG.infof("Brinquedo (%d) atualizado com sucesso.", itemPedido.id());
+            return Response.status(Status.NO_CONTENT).entity(itemPedido).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao atualizar uma compra.");
+            LOG.error("Erro ao atualizar um brinquedo.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class PedidoResource {
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) {
-        compraService.delete(id);
+        itemPedidoService.delete(id);
         return Response
                 .status(Status.NO_CONTENT)
                 .build();
@@ -123,21 +123,21 @@ public class PedidoResource {
     @GET
     @Path("/search/{id}")
     @RolesAllowed({ "Admin" })
-    public PedidoResponseDTO searchId(@PathParam("id") Long id) {
-        return compraService.findById(id);
+    public ItemPedidoResponseDTO searchId(@PathParam("id") Long id) {
+        return itemPedidoService.findById(id);
     }
 
     @GET
     @Path("/search/{nome}")
     @RolesAllowed({ "Admin" })
-    public List<PedidoResponseDTO> search(@PathParam("nome") String nome) {
-        return compraService.findByNome(nome);
+    public List<ItemPedidoResponseDTO> search(@PathParam("nome") String nome) {
+        return itemPedidoService.findByNome(nome);
     }
 
     @GET
     @Path("/count")
     @RolesAllowed({ "Admin" })
     public long count() {
-        return compraService.count();
+        return itemPedidoService.count();
     }
 }

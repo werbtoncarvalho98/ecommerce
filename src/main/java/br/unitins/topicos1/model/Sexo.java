@@ -7,7 +7,6 @@ public enum Sexo {
     MASCULINO(2, "Masculino"),
     FEMININO(1, "Feminino");
 
-
     private int id;
     private String label;
 
@@ -27,13 +26,11 @@ public enum Sexo {
     public static Sexo valueOf(Integer id) throws IllegalArgumentException {
         if (id == null)
             return null;
-        for(Sexo sexo : Sexo.values()) {
+        for (Sexo sexo : Sexo.values()) {
             if (id.equals(sexo.getId()))
                 return sexo;
-        } 
+        }
         throw new IllegalArgumentException("Id inválido:" + id);
     }
 
-    
-    
 }

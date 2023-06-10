@@ -34,6 +34,7 @@ public class EnderecoResource {
     private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
 
     @GET
+    @RolesAllowed({ "Admin", "User" })
     public List<EnderecoResponseDTO> getAll() {
         return enderecoService.getAll();
     }
@@ -93,14 +94,14 @@ public class EnderecoResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return enderecoService.count();
     }
 
     @GET
     @Path("/search/{cep}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<EnderecoResponseDTO> search(@PathParam("cep") String cep) {
         return enderecoService.findByCep(cep);
     }

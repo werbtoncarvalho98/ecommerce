@@ -41,7 +41,7 @@ public class MunicipioResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public MunicipioResponseDTO findById(@PathParam("id") Long id) {
         return municipioService.findById(id);
     }
@@ -94,14 +94,14 @@ public class MunicipioResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return municipioService.count();
     }
 
     @GET
     @Path("/search/{nome}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<MunicipioResponseDTO> search(@PathParam("nome") String nome) {
         return municipioService.findByNome(nome);
 

@@ -1,16 +1,16 @@
 package br.unitins.topicos1.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 public class Usuario extends DefaultEntity {
@@ -18,27 +18,26 @@ public class Usuario extends DefaultEntity {
     private String login;
     private String senha;
     private String imagem;
+    private String nome;
+    private String email;
+
+    private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_telefone", unique = true)
+    private Telefone telefone;
+
+    @OneToOne()
+    @JoinColumn(name = "id_endereco", unique = true)
+    private Endereco endereco;
 
     @ElementCollection
     @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
     @Column(name = "perfil", length = 30)
     private Set<Perfil> perfis;
-
-    @OneToMany
-    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
-    private List<Endereco> enderecos;
-
-    @OneToMany
-    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "telefone_id"))
-    private List<Telefone> telefones;
-
-    @OneToMany
-    @JoinTable(name = "usuario_listadesejo", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "listadesejo_id"))
-    private List<Produto> listaDesejo;
-
-    @OneToOne
-    @JoinColumn(name = "id_pessoa_fisica", unique = true)
-    private PessoaFisica pessoaFisica;
 
     public String getLogin() {
         return login;
@@ -64,6 +63,54 @@ public class Usuario extends DefaultEntity {
         this.imagem = imagem;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
+    public Telefone getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(Telefone telefone) {
+        this.telefone = telefone;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
     public Set<Perfil> getPerfis() {
         return perfis;
     }
@@ -72,35 +119,4 @@ public class Usuario extends DefaultEntity {
         this.perfis = perfis;
     }
 
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
-
-    public List<Telefone> getTelefones() {
-        return telefones;
-    }
-
-    public void setTelefones(List<Telefone> telefones) {
-        this.telefones = telefones;
-    }
-
-    public List<Produto> getListaDesejo() {
-        return listaDesejo;
-    }
-
-    public void setListaDesejo(List<Produto> listaDesejo) {
-        this.listaDesejo = listaDesejo;
-    }
-
-    public PessoaFisica getPessoaFisica() {
-        return pessoaFisica;
-    }
-
-    public void setPessoaFisica(PessoaFisica pessoaFisica) {
-        this.pessoaFisica = pessoaFisica;
-    }
 }

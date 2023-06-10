@@ -41,7 +41,7 @@ public class TelefoneResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public TelefoneResponseDTO findById(@PathParam("id") Long id) {
         return telefoneService.findById(id);
     }
@@ -94,14 +94,14 @@ public class TelefoneResource {
 
     @GET
     @Path("/count")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public long count() {
         return telefoneService.count();
     }
 
     @GET
     @Path("/search/{numero}")
-    @RolesAllowed({ "Admin" })
+    @RolesAllowed({ "Admin", "User" })
     public List<TelefoneResponseDTO> search(@PathParam("numero") String numero) {
         return telefoneService.findByNumero(numero);
     }
