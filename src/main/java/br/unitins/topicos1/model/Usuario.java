@@ -20,20 +20,15 @@ public class Usuario extends DefaultEntity {
     private String imagem;
     private String nome;
     private String email;
-
     private String cpf;
-
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_telefone", unique = true)
     private Telefone telefone;
-
     @OneToOne()
     @JoinColumn(name = "id_endereco", unique = true)
     private Endereco endereco;
-
     @ElementCollection
     @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
     @Column(name = "perfil", length = 30)

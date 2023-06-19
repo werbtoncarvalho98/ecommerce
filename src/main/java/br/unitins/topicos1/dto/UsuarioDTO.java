@@ -1,9 +1,14 @@
 package br.unitins.topicos1.dto;
 
 public record UsuarioDTO(
+                String login,
+                String senha,
+//              String imagem,
                 String nome,
-                String cpf,
+                String email,
+                String cpf,            
                 Integer idSexo,
-                Long telefone,
-                Long endereco) {
+                Long idTelefone,
+                Long idEndereco,
+                Long idPerfis) {
 }

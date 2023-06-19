@@ -3,7 +3,6 @@ package br.unitins.topicos1.resource;
 import java.io.IOException;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.topicos1.application.Result;

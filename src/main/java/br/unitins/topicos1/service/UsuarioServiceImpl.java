@@ -26,7 +26,7 @@ import jakarta.ws.rs.NotFoundException;
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Inject
-    UsuarioRepository clienteRepository;
+    UsuarioRepository usuarioRepository;
 
     @Inject
     TelefoneRepository telefoneRepository;
@@ -42,7 +42,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<UsuarioResponseDTO> getAll() {
-        return clienteRepository.findAll()
+        return usuarioRepository.findAll()
                 .stream()
                 .map(UsuarioResponseDTO::new)
                 .collect(Collectors.toList());
@@ -50,58 +50,70 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioResponseDTO findById(Long id) {
-        Usuario cliente = clienteRepository.findById(id);
-        if (cliente == null)
+        Usuario usuario = usuarioRepository.findById(id);
+        if (usuario == null)
             throw new NotFoundException("Não encontrado");
-        return new UsuarioResponseDTO(cliente);
+        return new UsuarioResponseDTO(usuario);
     }
 
     @Override
     @Transactional
-    public UsuarioResponseDTO create(UsuarioDTO clienteDTO) throws ConstraintViolationException {
-        validar(clienteDTO);
+    public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+        validar(usuarioDTO);
 
         var entity = new Usuario();
-        entity.setNome(clienteDTO.nome());
-        entity.setCpf(clienteDTO.cpf());
+        entity.setLogin(usuarioDTO.login());
+        HashServiceImpl hash = new HashServiceImpl();
+        entity.setSenha(hash.getHashSenha(usuarioDTO.senha()));
+        entity.setNome(usuarioDTO.nome());
+        entity.setEmail(usuarioDTO.email());
+        entity.setCpf(usuarioDTO.cpf());
 
-        entity.setSexo(Sexo.valueOf(clienteDTO.idSexo()));
+        Integer idSexo = usuarioDTO.idSexo();
+        Sexo sexo = idSexo != null ? Sexo.valueOf(idSexo) : null;
+        entity.setSexo(sexo);
 
-        entity.setTelefone(new Telefone());
-        entity.getTelefone().setId(clienteDTO.telefone());
+        Telefone telefone = telefoneRepository.findById(usuarioDTO.idTelefone());
+        entity.setTelefone(telefone);
 
-        entity.setEndereco(new Endereco());
-        entity.getEndereco().setId(clienteDTO.endereco());
+        Endereco endereco = enderecoRepository.findById(usuarioDTO.idEndereco());
+        entity.setEndereco(endereco);
 
-        clienteRepository.persist(entity);
+        usuarioRepository.persist(entity);
 
         return new UsuarioResponseDTO(entity);
     }
 
     @Override
     @Transactional
-    public UsuarioResponseDTO update(Long id, UsuarioDTO clienteDTO) throws ConstraintViolationException {
-        validar(clienteDTO);
+    public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+        validar(usuarioDTO);
 
-        var entity = clienteRepository.findById(id);
-        entity.setNome(clienteDTO.nome());
-        entity.setCpf(clienteDTO.cpf());
+        var entity = new Usuario();
+        entity.setLogin(usuarioDTO.login());
+        HashServiceImpl hash = new HashServiceImpl();
+        entity.setSenha(hash.getHashSenha(usuarioDTO.senha()));
+        entity.setNome(usuarioDTO.nome());
+        entity.setEmail(usuarioDTO.email());
+        entity.setCpf(usuarioDTO.cpf());
 
-        entity.setSexo(Sexo.valueOf(clienteDTO.idSexo()));
+        Integer idSexo = usuarioDTO.idSexo();
+        Sexo sexo = idSexo != null ? Sexo.valueOf(idSexo) : null;
+        entity.setSexo(sexo);
 
-        if (!clienteDTO.telefone().equals(entity.getTelefone().getId())) {
-            entity.getTelefone().setId(clienteDTO.telefone());
+        if (!usuarioDTO.idTelefone().equals(entity.getTelefone().getId())) {
+            entity.getTelefone().setId(usuarioDTO.idTelefone());
         }
-        if (!clienteDTO.endereco().equals(entity.getEndereco().getId())) {
-            entity.getEndereco().setId(clienteDTO.endereco());
+        if (!usuarioDTO.idEndereco().equals(entity.getEndereco().getId())) {
+            entity.getEndereco().setId(usuarioDTO.idEndereco());
         }
 
         return new UsuarioResponseDTO(entity);
     }
 
-    private void validar(UsuarioDTO clienteDTO) throws ConstraintViolationException {
+    private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
 
-        Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(clienteDTO);
+        Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(usuarioDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
@@ -114,17 +126,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (id == null)
             throw new IllegalArgumentException("Número inválido");
 
-        Usuario cliente = clienteRepository.findById(id);
+        Usuario usuario = usuarioRepository.findById(id);
 
-        if (clienteRepository.isPersistent(cliente)) {
-            clienteRepository.delete(cliente);
+        if (usuarioRepository.isPersistent(usuario)) {
+            usuarioRepository.delete(usuario);
         } else
             throw new NotFoundException("Nenhum usuario encontrado");
     }
 
     @Override
     public List<UsuarioResponseDTO> findByNome(String nome) throws NullPointerException {
-        List<Usuario> list = clienteRepository.findByNome(nome);
+        List<Usuario> list = usuarioRepository.findByNome(nome);
 
         if (list == null)
             throw new NullPointerException("nenhum usuario encontrado");
@@ -136,29 +148,29 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public long count() {
-        return clienteRepository.count();
+        return usuarioRepository.count();
     }
 
     @Override
     public Usuario findByLoginAndSenha(String login, String senha) {
-        return clienteRepository.findByLoginAndSenha(login, senha);
+        return usuarioRepository.findByLoginAndSenha(login, senha);
     }
 
     @Override
     public UsuarioResponseDTO findByLogin(String login) {
-        Usuario cliente = clienteRepository.findByLogin(login);
-        if (cliente == null)
+        Usuario usuario = usuarioRepository.findByLogin(login);
+        if (usuario == null)
             throw new NotFoundException("Usuario não encontrado");
-        return new UsuarioResponseDTO(cliente);
+        return new UsuarioResponseDTO(usuario);
     }
 
     @Override
     @Transactional
     public UsuarioResponseDTO update(Long id, String nomeImagem) {
-        Usuario cliente = clienteRepository.findById(id);
+        Usuario usuario = usuarioRepository.findById(id);
 
-        cliente.setImagem(nomeImagem);
+        usuario.setImagem(nomeImagem);
 
-        return new UsuarioResponseDTO(cliente);
+        return new UsuarioResponseDTO(usuario);
     }
 }

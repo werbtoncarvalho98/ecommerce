@@ -52,7 +52,7 @@ public class AuthResource {
                 .build();
     }
 
-    /* @GET
+    @GET
     @Path("/usuario")
     @RolesAllowed({ "User" })
     public Response getPerfilUsuario() {
@@ -61,5 +61,5 @@ public class AuthResource {
         UsuarioResponseDTO usuario = usuarioService.findByLogin(login);
 
         return Response.ok(usuario).build();
-    } */
+    }
 }
