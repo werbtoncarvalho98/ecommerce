@@ -10,6 +10,11 @@ public record ProdutoResponseDTO(
         Integer estoque) {
 
     public ProdutoResponseDTO(Produto produto) {
-        this(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getPreco(), produto.getEstoque());
+        this(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getPreco(),
+                produto.getEstoque());
     }
 }

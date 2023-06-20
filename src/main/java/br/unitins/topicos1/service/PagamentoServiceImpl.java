@@ -54,7 +54,6 @@ public class PagamentoServiceImpl implements PagamentoService {
         Pagamento entity = new Pagamento();
 
         entity.setValor(pagamentoDTO.valor());
-        entity.setPedido(pagamentoDTO.pedido());
 
         pagamentoRepository.persist(entity);
         return new PagamentoResponseDTO(entity);
@@ -69,7 +68,6 @@ public class PagamentoServiceImpl implements PagamentoService {
         validar(pagamentoDTO);
 
         pagamentoUpdate.setValor(pagamentoDTO.valor());
-        pagamentoUpdate.setPedido(pagamentoDTO.pedido());
 
         pagamentoRepository.persist(pagamentoUpdate);
         return new PagamentoResponseDTO(pagamentoUpdate);

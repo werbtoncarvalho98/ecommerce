@@ -45,8 +45,6 @@ public class PagamentoResource {
     @GET
     @RolesAllowed({ "Admin", "User" })
     public Response getUsuario() {
-
-        // obtendo o login a partir do token
         String login = jwt.getSubject();
         UsuarioResponseDTO usuario = usuarioService.findByLogin(login);
 
@@ -72,7 +70,7 @@ public class PagamentoResource {
     @POST
     @RolesAllowed({ "Admin" })
     public Response insert(PagamentoDTO pagamentoDTO) {
-        LOG.infof("Inserindo um pagamento: %s", pagamentoDTO.valor(), pagamentoDTO.pedido());
+        LOG.infof("Inserindo um pagamento: %s", pagamentoDTO.valor());
         Result result = null;
         try {
             PagamentoResponseDTO pagamento = pagamentoService.create(pagamentoDTO);
@@ -93,7 +91,7 @@ public class PagamentoResource {
     @Path("/{id}")
     @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, PagamentoDTO pagamentoDTO) {
-        LOG.infof("Atualizando um pagamento: %s", pagamentoDTO.valor(), pagamentoDTO.pedido());
+        LOG.infof("Atualizando um pagamento: %s", pagamentoDTO.valor());
         Result result = null;
         try {
             PagamentoResponseDTO pagamento = pagamentoService.update(id, pagamentoDTO);
@@ -140,5 +138,4 @@ public class PagamentoResource {
     public long count() {
         return pagamentoService.count();
     }
-
 }

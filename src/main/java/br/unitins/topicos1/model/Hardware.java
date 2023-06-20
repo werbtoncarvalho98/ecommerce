@@ -16,14 +16,11 @@ public class Hardware extends Produto {
 
     private String modelo;
     private LocalDate lancamento;
-
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
-
     @Enumerated(EnumType.STRING)
     private Integridade integridade;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_fabricante")
     private Fabricante fabricante;
 

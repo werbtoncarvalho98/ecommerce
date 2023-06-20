@@ -10,5 +10,6 @@ public record UsuarioDTO(
                 Integer idSexo,
                 Long idTelefone,
                 Long idEndereco,
-                Long idPerfis) {
+                Long idPerfis,
+                Long idPedido) {
 }

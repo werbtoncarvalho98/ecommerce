@@ -5,6 +5,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import br.unitins.topicos1.model.Endereco;
+import br.unitins.topicos1.model.Pedido;
 import br.unitins.topicos1.model.Perfil;
 import br.unitins.topicos1.model.Sexo;
 import br.unitins.topicos1.model.Telefone;
@@ -20,7 +21,8 @@ public record UsuarioResponseDTO(
         @JsonInclude(JsonInclude.Include.NON_NULL) Sexo sexo,
         Telefone telefone,
         Endereco endereco,
-        Set<Perfil> perfis) {
+        Set<Perfil> perfis,
+        Pedido pedido) {
     public UsuarioResponseDTO(Usuario cliente) {
         this(cliente.getId(),
                 cliente.getLogin(),
@@ -31,6 +33,7 @@ public record UsuarioResponseDTO(
                 cliente.getSexo(),
                 cliente.getTelefone(),
                 cliente.getEndereco(),
-                cliente.getPerfis());
+                cliente.getPerfis(),
+                cliente.getPedido());
     }
 }

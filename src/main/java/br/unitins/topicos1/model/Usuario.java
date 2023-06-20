@@ -33,6 +33,8 @@ public class Usuario extends DefaultEntity {
     @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
     @Column(name = "perfil", length = 30)
     private Set<Perfil> perfis;
+    @OneToOne()
+    private Pedido pedido;
 
     public String getLogin() {
         return login;
@@ -114,4 +116,11 @@ public class Usuario extends DefaultEntity {
         this.perfis = perfis;
     }
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 }
