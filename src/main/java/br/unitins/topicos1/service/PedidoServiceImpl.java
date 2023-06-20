@@ -9,9 +9,11 @@ import br.unitins.topicos1.dto.PedidoResponseDTO;
 import br.unitins.topicos1.model.Hardware;
 import br.unitins.topicos1.model.Pagamento;
 import br.unitins.topicos1.model.Pedido;
+import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.HardwareRepository;
 import br.unitins.topicos1.repository.PagamentoRepository;
 import br.unitins.topicos1.repository.PedidoRepository;
+import br.unitins.topicos1.repository.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,9 @@ import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class PedidoServiceImpl implements PedidoService {
+
+    @Inject
+    UsuarioRepository usuarioRepository;
 
     @Inject
     PedidoRepository pedidoRepository;
@@ -61,6 +66,7 @@ public class PedidoServiceImpl implements PedidoService {
         validar(pedidoDTO);
 
         Pedido entity = new Pedido();
+
         Pagamento pagamento = pagamentoRepository.findById(pedidoDTO.idPagamento());
         entity.setPagamento(pagamento);
         Hardware hardware = hardwareRepository.findById(pedidoDTO.idHardware());

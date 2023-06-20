@@ -21,8 +21,7 @@ public record UsuarioResponseDTO(
         @JsonInclude(JsonInclude.Include.NON_NULL) Sexo sexo,
         Telefone telefone,
         Endereco endereco,
-        Set<Perfil> perfis,
-        Pedido pedido) {
+        Set<Perfil> perfis) {
     public UsuarioResponseDTO(Usuario cliente) {
         this(cliente.getId(),
                 cliente.getLogin(),
@@ -33,7 +32,6 @@ public record UsuarioResponseDTO(
                 cliente.getSexo(),
                 cliente.getTelefone(),
                 cliente.getEndereco(),
-                cliente.getPerfis(),
-                cliente.getPedido());
+                cliente.getPerfis());
     }
 }

@@ -84,9 +84,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         Endereco endereco = enderecoRepository.findById(usuarioDTO.idEndereco());
         entity.setEndereco(endereco);
 
-        Pedido pedido = pedidoRepository.findById(usuarioDTO.idPedido());
-        entity.setPedido(pedido);
-
         usuarioRepository.persist(entity);
 
         return new UsuarioResponseDTO(entity);
@@ -114,9 +111,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (!usuarioDTO.idEndereco().equals(entity.getEndereco().getId()))
             entity.getEndereco().setId(usuarioDTO.idEndereco());
-            
-        if (!usuarioDTO.idPedido().equals(entity.getPedido().getId()))
-            entity.getPedido().setId(usuarioDTO.idPedido());
 
         return new UsuarioResponseDTO(entity);
     }

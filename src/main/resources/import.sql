@@ -1,11 +1,28 @@
--- Preenchendo a tabela usuario
 INSERT INTO usuario (login, senha) 
 VALUES ('admin', 'Dqea/mtuitkfQ0CNCFp54QoW6mZLhWqZ1CbtUcqWegJ0YmJOEDWZjpiqBz31LlpSJ/Ro4Yz5wcVsG7UjDij74g==');
 
--- Preenchendo a tabela perfis
 INSERT INTO perfis (id_usuario, perfil)
 VALUES (1, 'Admin');
 
+INSERT INTO telefone (ddd, numero) 
+VALUES ('99', '9 9108-1780');
+
+INSERT INTO estado (nome, sigla)
+VALUES ('Tocantins', 'TO');
+
+INSERT INTO municipio (nome, id_estado)
+VALUES ('Palmas', 1);
+
+INSERT INTO endereco (principal, logradouro, numero, complemento, bairro, cep, id_municipio)
+VALUES (true, 'Av. NS. 2', '2', 'Condominio', '404 N', '77006-454', 1);
+
+INSERT INTO usuario (nome, email, cpf, sexo, id_telefone, id_endereco) 
+VALUES ('Werbton', 'werbton98@gmail.com', '61810969301', 'MASCULINO', 1, 1);
+
+INSERT INTO fabricante (nome, website)
+VALUES ('NVidia', 'nvidia.com');
+
+/*
 -- Preenchendo a tabela usuario
 INSERT INTO usuario (login, senha) 
 VALUES ('user', 'rfn8b4ovxCwc0nvvqCrFPBFIApxDRppESGK0krCm0dzvrVBJ7xHLaLCQQmq9L5QSUemLAtO7dwrnhNgq8AVu3A==');
@@ -64,4 +81,5 @@ VALUES ('NVidia', 'nvidia.com');
 
 -- Preenchendo a tabela hardware
 /* INSERT INTO hardware (modelo, lancamento, nivel, integridade, id_fabricante)
-VALUES ('GeForce RTX 3080', '2020-09-17', 'HIGH_END', 'NOVO', 1); */
+VALUES ('GeForce RTX 3080', '2020-09-17', 'HIGH_END', 'NOVO', 1);
+*/

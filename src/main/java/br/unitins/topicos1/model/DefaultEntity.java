@@ -15,17 +15,19 @@ public class DefaultEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime inclusao;
-    private LocalDateTime alteracao;
+
+    private LocalDateTime dataInclusao;
+
+    private LocalDateTime dataAlteracao;
 
     @PrePersist
     private void gerarDataInclusao() {
-        inclusao = LocalDateTime.now();
+        dataInclusao = LocalDateTime.now();
     }
 
     @PreUpdate
     private void gerarDataAlteracao() {
-        alteracao = LocalDateTime.now();
+        dataAlteracao = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -37,18 +39,18 @@ public class DefaultEntity {
     }
 
     public LocalDateTime getDataInclusao() {
-        return inclusao;
+        return dataInclusao;
     }
 
-    public void setInclusao(LocalDateTime inclusao) {
-        this.inclusao = inclusao;
+    public void setDataInclusao(LocalDateTime dataInclusao) {
+        this.dataInclusao = dataInclusao;
     }
 
-    public LocalDateTime getAlteracao() {
-        return alteracao;
+    public LocalDateTime getDataAlteracao() {
+        return dataAlteracao;
     }
 
-    public void setAteracao(LocalDateTime alteracao) {
-        this.alteracao = alteracao;
+    public void setDataAlteracao(LocalDateTime dataAlteracao) {
+        this.dataAlteracao = dataAlteracao;
     }
 }
