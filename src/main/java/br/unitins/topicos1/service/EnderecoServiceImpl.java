@@ -63,21 +63,21 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     @Transactional
     public EnderecoResponseDTO update(Long id, EnderecoDTO enderecoDTO) throws ConstraintViolationException {
-        Endereco enderecoUpdate = enderecoRepository.findById(id);
-        if (enderecoUpdate == null)
+        Endereco entityUpdate = enderecoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Endereco não encontrado.");
         validar(enderecoDTO);
-        enderecoUpdate.setPrincipal(enderecoDTO.principal());
-        enderecoUpdate.setLogradouro(enderecoDTO.logradouro());
-        enderecoUpdate.setNumero(enderecoDTO.numero());
-        enderecoUpdate.setComplemento(enderecoDTO.complemento());
-        enderecoUpdate.setBairro(enderecoDTO.bairro());
-        enderecoUpdate.setCep(enderecoDTO.cep());
-        enderecoUpdate.setMunicipio(new Municipio());
-        enderecoUpdate.getMunicipio().setId(enderecoDTO.idMunicipio());
-        enderecoRepository.persist(enderecoUpdate);
+        entityUpdate.setPrincipal(enderecoDTO.principal());
+        entityUpdate.setLogradouro(enderecoDTO.logradouro());
+        entityUpdate.setNumero(enderecoDTO.numero());
+        entityUpdate.setComplemento(enderecoDTO.complemento());
+        entityUpdate.setBairro(enderecoDTO.bairro());
+        entityUpdate.setCep(enderecoDTO.cep());
+        entityUpdate.setMunicipio(new Municipio());
+        entityUpdate.getMunicipio().setId(enderecoDTO.idMunicipio());
+        enderecoRepository.persist(entityUpdate);
 
-        return new EnderecoResponseDTO(enderecoUpdate);
+        return new EnderecoResponseDTO(entityUpdate);
     }
 
     private void validar(EnderecoDTO enderecoDTO) throws ConstraintViolationException {

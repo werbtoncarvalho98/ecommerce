@@ -48,6 +48,10 @@ public class HardwareServiceImpl implements HardwareService {
         validar(hardwareDTO);
 
         Hardware entity = new Hardware();
+        entity.setNome(hardwareDTO.nome());
+        entity.setDescricao(hardwareDTO.descricao());
+        entity.setPreco(hardwareDTO.preco());
+        entity.setEstoque(hardwareDTO.estoque());
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
         entity.setNivel(Nivel.valueOf(hardwareDTO.idNivel()));
@@ -63,19 +67,24 @@ public class HardwareServiceImpl implements HardwareService {
     @Override
     @Transactional
     public HardwareResponseDTO update(Long id, HardwareDTO hardwareDTO) throws ConstraintViolationException {
-        Hardware hardwareUpdate = hardwareRepository.findById(id);
-        if (hardwareUpdate == null)
+        Hardware entityUpdate = hardwareRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Hardware não encontrado.");
         validar(hardwareDTO);
-        hardwareUpdate.setModelo(hardwareDTO.modelo());
-        hardwareUpdate.setLancamento(hardwareDTO.lancamento());
-        hardwareUpdate.setNivel(Nivel.valueOf(hardwareDTO.idNivel()));
-        hardwareUpdate.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
-        hardwareUpdate.setFabricante(new Fabricante());
-        hardwareUpdate.getFabricante().setId(hardwareDTO.fabricante());
-        hardwareRepository.persist(hardwareUpdate);
         
-        return new HardwareResponseDTO(hardwareUpdate);
+        entityUpdate.setNome(hardwareDTO.nome());
+        entityUpdate.setDescricao(hardwareDTO.descricao());
+        entityUpdate.setPreco(hardwareDTO.preco());
+        entityUpdate.setEstoque(hardwareDTO.estoque());
+        entityUpdate.setModelo(hardwareDTO.modelo());
+        entityUpdate.setLancamento(hardwareDTO.lancamento());
+        entityUpdate.setNivel(Nivel.valueOf(hardwareDTO.idNivel()));
+        entityUpdate.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
+        entityUpdate.setFabricante(new Fabricante());
+        entityUpdate.getFabricante().setId(hardwareDTO.fabricante());
+        hardwareRepository.persist(entityUpdate);
+        
+        return new HardwareResponseDTO(entityUpdate);
     }
 
     private void validar(HardwareDTO hardwareDTO) throws ConstraintViolationException {

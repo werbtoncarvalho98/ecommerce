@@ -56,14 +56,14 @@ public class FabricanteServiceImpl implements FabricanteService {
     @Override
     @Transactional
     public FabricanteResponseDTO update(Long id, FabricanteDTO fabricanteDTO) throws ConstraintViolationException {
-        Fabricante fabricanteUpdate = fabricanteRepository.findById(id);
-        if (fabricanteUpdate == null)
+        Fabricante entityUpdate = fabricanteRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Fabricante não encontrado.");
         validar(fabricanteDTO);
-        fabricanteUpdate.setNome(fabricanteDTO.nome());
-        fabricanteUpdate.setWebsite(fabricanteDTO.website());
+        entityUpdate.setNome(fabricanteDTO.nome());
+        entityUpdate.setWebsite(fabricanteDTO.website());
 
-        return new FabricanteResponseDTO(fabricanteUpdate);
+        return new FabricanteResponseDTO(entityUpdate);
     }
 
     private void validar(FabricanteDTO fabricanteDTO) throws ConstraintViolationException {

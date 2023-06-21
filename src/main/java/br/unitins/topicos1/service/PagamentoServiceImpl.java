@@ -62,15 +62,15 @@ public class PagamentoServiceImpl implements PagamentoService {
     @Override
     @Transactional
     public PagamentoResponseDTO update(Long id, PagamentoDTO pagamentoDTO) throws ConstraintViolationException {
-        Pagamento pagamentoUpdate = pagamentoRepository.findById(id);
-        if (pagamentoUpdate == null)
+        Pagamento entityUpdate = pagamentoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Pagamento não encontrado.");
         validar(pagamentoDTO);
 
-        pagamentoUpdate.setValor(pagamentoDTO.valor());
+        entityUpdate.setValor(pagamentoDTO.valor());
 
-        pagamentoRepository.persist(pagamentoUpdate);
-        return new PagamentoResponseDTO(pagamentoUpdate);
+        pagamentoRepository.persist(entityUpdate);
+        return new PagamentoResponseDTO(entityUpdate);
     }
 
     @Override

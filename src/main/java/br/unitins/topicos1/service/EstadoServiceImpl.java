@@ -56,15 +56,15 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     @Transactional
     public EstadoResponseDTO update(Long id, EstadoDTO estadoDTO) throws ConstraintViolationException {
-        Estado estadoUpdate = estadoRepository.findById(id);
-        if (estadoUpdate == null)
+        Estado entityUpdate = estadoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Estado não encontrado.");
         validar(estadoDTO);
-        estadoUpdate.setNome(estadoDTO.nome());
-        estadoUpdate.setSigla(estadoDTO.sigla());
-        estadoRepository.persist(estadoUpdate);
+        entityUpdate.setNome(estadoDTO.nome());
+        entityUpdate.setSigla(estadoDTO.sigla());
+        estadoRepository.persist(entityUpdate);
         
-        return new EstadoResponseDTO(estadoUpdate);
+        return new EstadoResponseDTO(entityUpdate);
     }
 
     private void validar(EstadoDTO estadoDTO) throws ConstraintViolationException {

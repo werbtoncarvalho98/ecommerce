@@ -9,6 +9,10 @@ import br.unitins.topicos1.model.Nivel;
 public record HardwareResponseDTO(
 
         Long id,
+        String nome,
+        String descricao,
+        Float preco,
+        Integer estoque,
         String modelo,
         LocalDate lancamento,
         Nivel nivel,
@@ -16,7 +20,16 @@ public record HardwareResponseDTO(
         FabricanteResponseDTO fabricante) {
 
     public HardwareResponseDTO(Hardware hardware) {
-        this(hardware.getId(), hardware.getModelo(), hardware.getLancamento(), hardware.getNivel(),
-                hardware.getIntegridade(), new FabricanteResponseDTO(hardware.getFabricante()));
+        this(
+                hardware.getId(),
+                hardware.getNome(),
+                hardware.getDescricao(),
+                hardware.getPreco(),
+                hardware.getEstoque(),
+                hardware.getModelo(),
+                hardware.getLancamento(),
+                hardware.getNivel(),
+                hardware.getIntegridade(),
+                new FabricanteResponseDTO(hardware.getFabricante()));
     }
 }

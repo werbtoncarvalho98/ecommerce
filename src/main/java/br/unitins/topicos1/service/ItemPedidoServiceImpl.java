@@ -61,16 +61,16 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     @Override
     @Transactional
     public ItemPedidoResponseDTO update(Long id, ItemPedidoDTO itemPedidoDTO) throws ConstraintViolationException{
-        ItemPedido itemUpdate = itemPedidoRepository.findById(id);
-        if (itemUpdate == null)
+        ItemPedido entityUpdate = itemPedidoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Item Pedido não encontrada.");
         validar(itemPedidoDTO);
 
-       itemUpdate.setQuantidade(itemPedidoDTO.quantidade());
-       itemUpdate.setPreco(itemPedidoDTO.preco());
+       entityUpdate.setQuantidade(itemPedidoDTO.quantidade());
+       entityUpdate.setPreco(itemPedidoDTO.preco());
 
-       itemPedidoRepository.persist(itemUpdate);
-        return new ItemPedidoResponseDTO(itemUpdate);
+       itemPedidoRepository.persist(entityUpdate);
+        return new ItemPedidoResponseDTO(entityUpdate);
 
     }
 

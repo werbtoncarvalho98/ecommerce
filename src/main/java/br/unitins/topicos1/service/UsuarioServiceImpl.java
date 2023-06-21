@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Pedido;
 import br.unitins.topicos1.model.Sexo;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.model.Usuario;

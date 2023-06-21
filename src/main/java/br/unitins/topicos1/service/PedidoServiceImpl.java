@@ -71,6 +71,10 @@ public class PedidoServiceImpl implements PedidoService {
         entity.setPagamento(pagamento);
         Hardware hardware = hardwareRepository.findById(pedidoDTO.idHardware());
         entity.setHardware(hardware);
+        Usuario usuario = usuarioRepository.findById(pedidoDTO.idUsuario());
+        if (usuario == null)
+            throw new NotFoundException("Usuário não encontrado.");
+        entity.setUsuario(usuario);
 
         pedidoRepository.persist(entity);
         return new PedidoResponseDTO(entity);
@@ -79,18 +83,18 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public PedidoResponseDTO update(Long id, PedidoDTO pedidoDTO) {
-        Pedido pedidoUpdate = pedidoRepository.findById(id);
-        if (pedidoUpdate == null)
+        Pedido entityUpdate = pedidoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Pedido não encontrada.");
         validar(pedidoDTO);
 
         Pagamento pagamento = pagamentoRepository.findById(pedidoDTO.idPagamento());
-        pedidoUpdate.setPagamento(pagamento);
+        entityUpdate.setPagamento(pagamento);
         Hardware hardware = hardwareRepository.findById(pedidoDTO.idHardware());
-        pedidoUpdate.setHardware(hardware);
+        entityUpdate.setHardware(hardware);
 
-        pedidoRepository.persist(pedidoUpdate);
-        return new PedidoResponseDTO(pedidoUpdate);
+        pedidoRepository.persist(entityUpdate);
+        return new PedidoResponseDTO(entityUpdate);
     }
 
     @Override

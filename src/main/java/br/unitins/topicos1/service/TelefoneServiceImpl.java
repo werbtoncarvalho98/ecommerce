@@ -56,15 +56,15 @@ public class TelefoneServiceImpl implements TelefoneService {
     @Override
     @Transactional
     public TelefoneResponseDTO update(Long id, TelefoneDTO telefoneDTO) throws ConstraintViolationException {
-        Telefone telefoneUpdate = telefoneRepository.findById(id);
-        if (telefoneUpdate == null)
+        Telefone entityUpdate = telefoneRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Telefone não encontrado.");
         validar(telefoneDTO);
-        telefoneUpdate.setDdd(telefoneDTO.ddd());
-        telefoneUpdate.setNumero(telefoneDTO.numero());
-        telefoneRepository.persist(telefoneUpdate);
+        entityUpdate.setDdd(telefoneDTO.ddd());
+        entityUpdate.setNumero(telefoneDTO.numero());
+        telefoneRepository.persist(entityUpdate);
         
-        return new TelefoneResponseDTO(telefoneUpdate);
+        return new TelefoneResponseDTO(entityUpdate);
     }
 
     private void validar(TelefoneDTO telefoneDTO) throws ConstraintViolationException {

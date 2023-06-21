@@ -1,17 +1,26 @@
 package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class Pedido extends DefaultEntity {
 
+    @ManyToOne
+    private Usuario usuario;
     @OneToOne
-    Pagamento pagamento;
+    private Pagamento pagamento;
     @OneToOne
-    Hardware hardware;
+    private Hardware hardware;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public Pagamento getPagamento() {
         return pagamento;

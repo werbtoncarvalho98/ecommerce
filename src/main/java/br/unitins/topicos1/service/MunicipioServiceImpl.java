@@ -61,16 +61,16 @@ public class MunicipioServiceImpl implements MunicipioService {
     @Override
     @Transactional
     public MunicipioResponseDTO update(Long id, MunicipioDTO municipioDTO) throws ConstraintViolationException {
-        Municipio municipioUpdate = municipioRepository.findById(id);
-        if (municipioUpdate == null)
+        Municipio entityUpdate = municipioRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Municipio não encontrado.");
         validar(municipioDTO);
-        municipioUpdate.setNome(municipioDTO.nome());
-        municipioUpdate.setEstado(new Estado());
-        municipioUpdate.getEstado().setId(municipioDTO.idEstado());
-        municipioRepository.persist(municipioUpdate);
+        entityUpdate.setNome(municipioDTO.nome());
+        entityUpdate.setEstado(new Estado());
+        entityUpdate.getEstado().setId(municipioDTO.idEstado());
+        municipioRepository.persist(entityUpdate);
         
-        return new MunicipioResponseDTO(municipioUpdate);
+        return new MunicipioResponseDTO(entityUpdate);
     }
 
     private void validar(MunicipioDTO municipioDTO) throws ConstraintViolationException {

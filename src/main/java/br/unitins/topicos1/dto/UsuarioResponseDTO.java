@@ -5,7 +5,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import br.unitins.topicos1.model.Endereco;
-import br.unitins.topicos1.model.Pedido;
 import br.unitins.topicos1.model.Perfil;
 import br.unitins.topicos1.model.Sexo;
 import br.unitins.topicos1.model.Telefone;

@@ -60,17 +60,17 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ProdutoResponseDTO update(Long id, ProdutoDTO produtoDTO) throws ConstraintViolationException {
         validar(produtoDTO);
 
-        Produto produtoUpdate = produtoRepository.findById(id);
-        if (produtoUpdate == null)
+        Produto entityUpdate = produtoRepository.findById(id);
+        if (entityUpdate == null)
             throw new NotFoundException("Produto não encontrado.");
         validar(produtoDTO);
-        produtoUpdate.setNome(produtoDTO.nome());
-        produtoUpdate.setDescricao(produtoDTO.descricao());
-        produtoUpdate.setPreco(produtoDTO.preco());
-        produtoUpdate.setEstoque(produtoDTO.estoque());
-        produtoRepository.persist(produtoUpdate);
+        entityUpdate.setNome(produtoDTO.nome());
+        entityUpdate.setDescricao(produtoDTO.descricao());
+        entityUpdate.setPreco(produtoDTO.preco());
+        entityUpdate.setEstoque(produtoDTO.estoque());
+        produtoRepository.persist(entityUpdate);
         
-        return new ProdutoResponseDTO(produtoUpdate);
+        return new ProdutoResponseDTO(entityUpdate);
     }
 
     private void validar(ProdutoDTO produtoDTO) throws ConstraintViolationException {
