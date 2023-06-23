@@ -110,4 +110,10 @@ public class HardwareServiceImpl implements HardwareService {
     public Long count() {
         return hardwareRepository.count();
     }
+
+    @Override
+    public HardwareResponseDTO update(Long id, String imagem) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
 }

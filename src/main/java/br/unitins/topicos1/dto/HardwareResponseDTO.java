@@ -17,7 +17,8 @@ public record HardwareResponseDTO(
         LocalDate lancamento,
         Nivel nivel,
         Integridade integridade,
-        FabricanteResponseDTO fabricante) {
+        FabricanteResponseDTO fabricante,
+        String imagem) {
 
     public HardwareResponseDTO(Hardware hardware) {
         this(
@@ -30,6 +31,7 @@ public record HardwareResponseDTO(
                 hardware.getLancamento(),
                 hardware.getNivel(),
                 hardware.getIntegridade(),
-                new FabricanteResponseDTO(hardware.getFabricante()));
+                new FabricanteResponseDTO(hardware.getFabricante()),
+                hardware.getImagem());
     }
 }

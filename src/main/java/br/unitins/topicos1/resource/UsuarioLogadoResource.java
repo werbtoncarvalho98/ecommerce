@@ -53,7 +53,7 @@ public class UsuarioLogadoResource {
         String nomeImagem = "";
 
         try {
-            nomeImagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
+            nomeImagem = fileService.salvarImagem(form.getImagem(), form.getNomeImagem());
 
         } catch (IOException e) {
             Result result = new Result(e.getMessage());

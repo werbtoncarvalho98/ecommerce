@@ -11,5 +11,6 @@ public record HardwareDTO(
         LocalDate lancamento,
         Integer idNivel,
         Integer idIntegridade,
-        Long fabricante) {
+        Long fabricante,
+        String imagem) {
 }

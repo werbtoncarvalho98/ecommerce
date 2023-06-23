@@ -29,6 +29,7 @@ public class Usuario extends DefaultEntity {
     @OneToOne()
     @JoinColumn(name = "id_endereco", unique = true)
     private Endereco endereco;
+    
     @ElementCollection
     @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
     @Column(name = "perfil", length = 30)

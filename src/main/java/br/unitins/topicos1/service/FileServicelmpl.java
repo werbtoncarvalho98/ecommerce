@@ -18,7 +18,7 @@ public class FileServicelmpl implements FileService {
             + File.separator + "usuario" + File.separator;
 
     @Override
-    public String salvarImagemUsuario(byte[] imagem, String nomeImagem) throws IOException {
+    public String salvarImagem(byte[] imagem, String nomeImagem) throws IOException {
         String mimeType = Files.probeContentType(new File(nomeImagem).toPath());
         List<String> listMimeType = Arrays.asList("image/jpg", "image/png", "image/gif");
         if (!listMimeType.contains(mimeType)) {

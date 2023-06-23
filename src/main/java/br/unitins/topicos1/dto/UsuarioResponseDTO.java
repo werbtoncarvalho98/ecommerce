@@ -14,23 +14,23 @@ public record UsuarioResponseDTO(
         Long id,
         String login,
         String senha,
-//      String imagem,
+        String imagem,
         String nome,
         String cpf,
         @JsonInclude(JsonInclude.Include.NON_NULL) Sexo sexo,
         Telefone telefone,
-        Endereco endereco,
-        Set<Perfil> perfis) {
+        Endereco endereco
+        /* Set<Perfil> perfis */) {
     public UsuarioResponseDTO(Usuario cliente) {
         this(cliente.getId(),
                 cliente.getLogin(),
                 cliente.getSenha(),
-//              cliente.getImagem(),
+                cliente.getImagem(),
                 cliente.getNome(),
                 cliente.getCpf(),
                 cliente.getSexo(),
                 cliente.getTelefone(),
-                cliente.getEndereco(),
-                cliente.getPerfis());
+                cliente.getEndereco()
+                /* cliente.getPerfis() */);
     }
 }

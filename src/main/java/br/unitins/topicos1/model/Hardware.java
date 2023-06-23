@@ -15,10 +15,14 @@ public class Hardware extends Produto {
 
     private String modelo;
     private LocalDate lancamento;
+    private String imagem;
+
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
+
     @Enumerated(EnumType.STRING)
     private Integridade integridade;
+
     @OneToOne
     @JoinColumn(name = "id_fabricante")
     private Fabricante fabricante;
@@ -61,5 +65,13 @@ public class Hardware extends Produto {
 
     public void setFabricante(Fabricante fabricante) {
         this.fabricante = fabricante;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 }

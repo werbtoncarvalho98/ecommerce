@@ -15,9 +15,11 @@ public interface HardwareService {
 
     HardwareResponseDTO update(Long id, HardwareDTO hardwareDTO);
 
-    void delete(Long id);
+    HardwareResponseDTO update(Long id, String imagem);
 
     List<HardwareResponseDTO> findByMarca(String marca);
+
+    void delete(Long id);
 
     Long count();
 }
