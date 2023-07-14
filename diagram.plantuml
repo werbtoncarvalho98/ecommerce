@@ -1,0 +1,122 @@
+@startuml
+
+class Cliente {
+    - id: Long
+    - nome: String
+    - email: String
+    - cpf: String
+}
+
+class Pedido {
+    - id: Long
+    - quantidade: int
+    - data: Date
+    - status: String
+}
+
+class ItemPedido {
+    - id: Long
+    - quantidade: int
+    - preco: Float
+}
+
+class Produto {
+    - id: Long
+    - nome: String
+    - descricao: String
+    - preco: Float
+    - estoque: Integer
+}
+
+class Hardware extends Produto {
+    - modelo: String
+    - lancamento: Date
+}
+
+class Fabricante {
+    - id: Long
+    - nome: String
+    - site: String
+}
+
+enum Nivel {
+    - ENTRADA: int
+    - MID_END: int
+    - HIGH_END: int
+}
+
+enum Integridade {
+    - NOVO: int
+    - USADO: int
+    - REPARADO: int
+}
+
+class Endereco {
+    - id: Long
+    - principal: boolean
+    - logradouro: String
+    - numero: String
+    - complemento: String
+    - bairro: String
+    - cep: String
+}
+
+class Municipio {
+    id: Integer
+    nome: String 
+}
+
+class Estado {
+    id: Integer
+    nome: String
+    sigla: String
+}
+
+class Telefone {
+    - id: Long
+    - ddd: String
+    - numero: String
+}
+
+class FormaPagamento {
+    - id: Long
+    - valor: Float
+}
+
+class Pix extends FormaPagamento {
+    - chave: String
+}
+
+class Credito extends FormaPagamento {
+    - titular: String
+    - numero: String
+    - validade: String
+    - cvv: String
+}
+
+class Debito extends FormaPagamento {
+    - titular: String
+    - numero: String
+    - validade: String
+    - cvv: String
+}
+
+class Boleto extends FormaPagamento {
+    - codigo: String
+}
+
+Cliente "1" <-down- "*" Pedido
+Cliente "1" *-down-> "*" Endereco
+Cliente "1" *-down-> "*" Telefone
+Cliente "*" --> "*" Produto : listaDesejo
+Pedido "1" *-down-> "*" ItemPedido
+Pedido "*" --> "1" Endereco
+Pedido "*" --> "1" FormaPagamento
+Produto "1" <-left- "*" ItemPedido
+Nivel "1" <-up- "*" Hardware
+Integridade "1" <-up- "*" Hardware
+Endereco "*" --> "1" Municipio
+Municipio "*" --> "1" Estado
+Fabricante "1" *-left-> "*" Hardware
+
+@enduml

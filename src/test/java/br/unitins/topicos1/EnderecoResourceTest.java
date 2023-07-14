@@ -6,13 +6,13 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.acme.dto.AuthUsuarioDTO;
+import org.acme.dto.EnderecoDTO;
+import org.acme.dto.EnderecoResponseDTO;
+import org.acme.service.EnderecoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.unitins.topicos1.dto.AuthUsuarioDTO;
-import br.unitins.topicos1.dto.EnderecoDTO;
-import br.unitins.topicos1.dto.EnderecoResponseDTO;
-import br.unitins.topicos1.service.EnderecoService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
